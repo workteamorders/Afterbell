@@ -1,0 +1,10 @@
+# Copy to .dev.vars for `pnpm preview` (wrangler pages dev). Values here are examples only.
+# In production set these in the Cloudflare Pages dashboard (Settings > Variables and Secrets).
+RPC_UPSTREAM_URL=https://your-rpc-provider.example/your-key
+BLOCKED_COUNTRIES=KP,IR
+ALLOWED_ORIGINS=
+RATE_LIMIT_PER_MINUTE=120
+# Local development only: lets the function fall back to a public RPC when RPC_UPSTREAM_URL is empty.
+ALLOW_DEFAULT_UPSTREAM=1
+# Ethereum upstream for /api/rpc?chain=ethereum. Without it (and without ALLOW_DEFAULT_UPSTREAM=1) Ethereum requests return 503.
+EVM_RPC_UPSTREAM_URL_ETHEREUM=https://your-ethereum-rpc-provider.example/your-key

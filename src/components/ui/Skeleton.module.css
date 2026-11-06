@@ -1,0 +1,51 @@
+.skeleton {
+  display: block;
+  background: var(--surface-3);
+  border-radius: var(--radius);
+  animation: pulse 1400ms var(--ease-out) infinite alternate;
+}
+
+.line {
+  height: 1rem;
+  width: 100%;
+}
+
+.title {
+  height: 1.5rem;
+  width: 70%;
+}
+
+.block {
+  height: 6rem;
+  width: 100%;
+}
+
+.pill {
+  height: 1.5rem;
+  width: 4rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-block-end: var(--stroke) solid var(--line-soft);
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    opacity: 0.75;
+  }
+}

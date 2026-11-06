@@ -1,0 +1,65 @@
+[
+  {
+    "id": "xstocks",
+    "name": "xStocks",
+    "legalEntity": "Backed Assets (JE) Limited (Jersey)",
+    "structure": "debt-tracker-certificate",
+    "rightsLabel": "Economic exposure only. No shareholder rights.",
+    "rightsSummary": "Each xStock is a bearer debt instrument classified as a tracker certificate. It tracks the price of a stock or fund but is not direct ownership of it. Holders get no shareholder voting rights. The issuer says each token is collateralised 1:1 by the underlying asset, held with regulated custodians in segregated accounts under a three-party control agreement with an independent security agent. Dividends are not paid out in cash: the custodian reinvests them, which raises the token's balance multiplier. Splits also change the multiplier.",
+    "redemptionPath": "Issuance and redemption with the issuer needs onboarding (identity and anti-money-laundering checks) and a whitelisted wallet. Most holders exit by selling on the market instead.",
+    "regionRestrictions": "Not marketed, offered or solicited in the United States or to U.S. Persons, or in other prohibited jurisdictions. The issuer's terms hold the full list.",
+    "restrictsUsPersons": true,
+    "sources": [
+      { "label": "xStocks: Product Legal Overview", "url": "https://docs.xstocks.fi/docs/product-legal-overview" },
+      { "label": "xStocks: Issuance and Redemption", "url": "https://docs.xstocks.fi/docs/issuance-and-redemption" },
+      { "label": "xStocks: Dividends and Stock Splits", "url": "https://docs.xstocks.fi/docs/dividends-and-stock-splits" }
+    ],
+    "lastChecked": "2026-11-04"
+  },
+  {
+    "id": "ondo",
+    "name": "Ondo Global Markets",
+    "legalEntity": "Ondo Global Markets (BVI) Limited",
+    "structure": "structured-note",
+    "rightsLabel": "Structured note. No shareholder rights.",
+    "rightsSummary": "Ondo's tokenised stocks are structured notes (debt instruments) under Swiss-law sales terms. Holders have no shareholder rights. The issuer describes 1:1 backing plus a buffer, with a security agent holding a first-priority security interest. Offered under Regulation S.",
+    "redemptionPath": "See the issuer's eligibility page. Primary-market access is limited to eligible, onboarded users.",
+    "regionRestrictions": "Not available in the United States and a long list of other jurisdictions. The issuer's eligibility page holds the full list.",
+    "restrictsUsPersons": true,
+    "sources": [
+      { "label": "Ondo: Legal and Regulatory", "url": "https://docs.ondo.finance/ondo-stocks/legal-and-regulatory" },
+      { "label": "Ondo: Eligibility", "url": "https://docs.ondo.finance/ondo-stocks/eligibility" }
+    ],
+    "lastChecked": "2026-11-04"
+  },
+  {
+    "id": "backpack",
+    "name": "Backpack Securities",
+    "legalEntity": "Backpack Securities (special-purpose vehicle structure)",
+    "structure": "spv-claim",
+    "rightsLabel": "Claim on a vehicle that holds the shares, with a redemption path.",
+    "rightsSummary": "Per Backpack's own article, the token is a claim on a special-purpose vehicle and is minted and redeemed 1:1. Holders who complete onboarding can redeem for the shares and move them through ACATS/DTCC.",
+    "redemptionPath": "Redeem for the underlying shares after onboarding with Backpack.",
+    "regionRestrictions": "Stated as not available in the United States, United Kingdom, UAE and Japan, and not on Backpack EU.",
+    "restrictsUsPersons": true,
+    "sources": [
+      { "label": "Backpack: How to buy SpaceX stock", "url": "https://learn.backpack.exchange/articles/how-to-buy-spacex-stock" }
+    ],
+    "lastChecked": "2026-11-04"
+  },
+  {
+    "id": "prestocks",
+    "name": "PreStocks",
+    "legalEntity": "Special-purpose vehicle structure (see issuer site)",
+    "structure": "synthetic-spv",
+    "rightsLabel": "Synthetic exposure only. No ownership, voting or dividends.",
+    "rightsSummary": "The issuer describes economic exposure through a special-purpose vehicle, with no ownership, voting rights, dividends or information rights. Pre-IPO exposure can be disputed by the company named in the token.",
+    "redemptionPath": "None stated on the issuer site.",
+    "regionRestrictions": "Not for the United States or U.S. persons.",
+    "restrictsUsPersons": true,
+    "sources": [
+      { "label": "PreStocks", "url": "https://prestocks.com" }
+    ],
+    "lastChecked": "2026-11-04"
+  }
+]

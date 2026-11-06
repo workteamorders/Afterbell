@@ -1,0 +1,70 @@
+.wrap {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+/* Ikon 16px, area sentuh 44px lewat padding negatif pada tata letak sekitar. */
+.trigger {
+  display: inline-grid;
+  place-items: center;
+  width: var(--target);
+  height: var(--target);
+  margin: calc(var(--space-3) * -1);
+  padding: 0;
+  background: transparent;
+  color: var(--text-muted);
+  border: 0;
+  border-radius: var(--radius);
+  cursor: help;
+}
+
+@media (hover: hover) {
+  .trigger:hover {
+    color: var(--text);
+  }
+}
+
+.tip {
+  position: absolute;
+  inset-block-end: calc(100% + var(--space-3));
+  inset-inline-start: 50%;
+  z-index: var(--z-overlay);
+  width: max-content;
+  max-width: min(18rem, calc(100vw - 2 * var(--gutter)));
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface);
+  color: var(--text);
+  border: var(--stroke) solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--elev-2-shadow);
+  font-weight: 400;
+  text-align: start;
+  text-transform: none;
+  letter-spacing: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(calc(-50% + var(--tip-shift, 0px)), var(--space-1));
+  transition:
+    opacity var(--dur-element) var(--ease-out),
+    transform var(--dur-element) var(--ease-out),
+    visibility 0s linear var(--dur-element);
+  pointer-events: none;
+}
+
+.wrap[data-open="true"] .tip,
+.wrap:focus-within .tip {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(calc(-50% + var(--tip-shift, 0px)), 0);
+  transition-delay: 0s;
+}
+
+@media (hover: hover) {
+  .wrap:hover .tip {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(calc(-50% + var(--tip-shift, 0px)), 0);
+    transition-delay: 0s;
+  }
+}

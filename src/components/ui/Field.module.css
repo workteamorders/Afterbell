@@ -1,0 +1,344 @@
+.field {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.labelRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.label {
+  font-size: var(--fs-14);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.counter {
+  font-size: var(--fs-12);
+  color: var(--text-muted);
+}
+
+.help {
+  font-size: var(--fs-14);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.msg {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--fs-14);
+  line-height: 1.45;
+}
+
+.msg svg {
+  flex: none;
+  margin-top: 0.15em;
+}
+
+.msgError {
+  color: var(--danger);
+}
+
+.msgSuccess {
+  color: var(--success);
+}
+
+/* Kontrol input: garis --line (3:1), fokus dengan cincin yang sama dengan tombol. */
+.control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 3rem;
+  background: var(--surface);
+  border: var(--stroke) solid var(--line);
+  border-radius: var(--radius);
+}
+
+.control:focus-within,
+.control[data-force="focus"] {
+  outline: var(--stroke-strong) solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .control:hover:not(.disabled, :focus-within) {
+    background: var(--surface-2);
+  }
+}
+
+.control[data-force="hover"] {
+  background: var(--surface-2);
+}
+
+.invalid {
+  border-color: var(--danger);
+  border-width: var(--stroke-strong);
+}
+
+.disabled {
+  background: var(--surface-2);
+  border-color: var(--line-soft);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  min-height: calc(3rem - 2px);
+  padding: 0 var(--space-3);
+  background: transparent;
+  border: 0;
+  outline: none;
+  font-size: var(--fs-16);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+.input:disabled {
+  cursor: not-allowed;
+}
+
+.suffix {
+  padding-inline-end: var(--space-3);
+  font-size: var(--fs-14);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.select {
+  appearance: none;
+  padding-inline-end: var(--space-8);
+  cursor: pointer;
+}
+
+.chevron {
+  position: absolute;
+  inset-inline-end: var(--space-3);
+  pointer-events: none;
+}
+
+/* Pilihan */
+.choiceWrap {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--target);
+  cursor: pointer;
+  line-height: 1.35;
+}
+
+.choiceHelp {
+  padding-inline-start: 2.25rem;
+}
+
+.native {
+  position: absolute;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+  opacity: 0;
+}
+
+.mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--surface);
+  border: var(--stroke) solid var(--line);
+  color: transparent;
+  transition: transform var(--dur-micro) var(--ease-out);
+}
+
+.box {
+  border-radius: var(--radius);
+}
+
+.radio {
+  border-radius: 50%;
+}
+
+.dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.native:checked + .box {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.native:checked + .radio {
+  border-color: var(--accent);
+  border-width: var(--stroke-strong);
+}
+
+.native:checked + .radio .dot {
+  background: var(--accent);
+}
+
+.native:focus-visible + .mark,
+.choice[data-force="focus"] .mark {
+  outline: var(--stroke-strong) solid var(--focus);
+  outline-offset: 2px;
+}
+
+.native:disabled + .mark {
+  background: var(--surface-2);
+  border-color: var(--line-soft);
+}
+
+.native:disabled ~ span:last-child,
+.choice:has(.native:disabled) {
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.choice:active .mark {
+  transform: scale(0.94);
+}
+
+/* Switch */
+.switchRow {
+  justify-content: space-between;
+}
+
+.track {
+  --_bd: var(--line);
+  flex: none;
+  display: flex;
+  align-items: center;
+  width: 3rem;
+  height: 1.5rem;
+  padding: var(--space-1);
+  background: var(--surface-3);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 var(--stroke) var(--_bd);
+}
+
+.thumb {
+  width: 1rem;
+  height: 1rem;
+  background: var(--text);
+  border-radius: 50%;
+  transition: transform var(--dur-element) var(--ease-out);
+}
+
+.native:checked ~ .track {
+  --_bd: var(--accent);
+  background: var(--accent);
+}
+
+.native:checked ~ .track .thumb {
+  background: var(--on-accent);
+  transform: translateX(1.5rem);
+}
+
+.native:focus-visible ~ .track,
+.choice[data-force="focus"] .track {
+  outline: var(--stroke-strong) solid var(--focus);
+  outline-offset: 2px;
+}
+
+.native:disabled ~ .track {
+  opacity: 0.5;
+}
+
+/* Slider */
+.sliderRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: var(--target);
+}
+
+.sliderValue {
+  min-width: 4.5ch;
+  text-align: end;
+  font-size: var(--fs-16);
+}
+
+.range {
+  flex: 1;
+  min-width: 0;
+  height: var(--target);
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+.range::-webkit-slider-runnable-track {
+  height: 4px;
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.range::-moz-range-track {
+  height: 4px;
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.range::-webkit-slider-thumb {
+  appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: calc((4px - 1.5rem) / 2);
+  background: var(--accent);
+  border: var(--stroke-strong) solid var(--surface);
+  border-radius: 50%;
+  box-shadow: 0 0 0 var(--stroke) var(--accent);
+}
+
+.range::-moz-range-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--accent);
+  border: var(--stroke-strong) solid var(--surface);
+  border-radius: 50%;
+  box-shadow: 0 0 0 var(--stroke) var(--accent);
+}
+
+.range:focus-visible {
+  outline: none;
+}
+
+.range:focus-visible::-webkit-slider-thumb {
+  outline: var(--stroke-strong) solid var(--focus);
+  outline-offset: 3px;
+}
+
+.range:focus-visible::-moz-range-thumb {
+  outline: var(--stroke-strong) solid var(--focus);
+  outline-offset: 3px;
+}
+
+.range:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

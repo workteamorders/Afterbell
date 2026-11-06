@@ -1,0 +1,4 @@
+{
+  "_note": "Daftar alamat wallet yang ditolak. Kosong sampai pemilik memilih sumber penyaringan (lihat docs/DECISIONS.md D-016).",
+  "addresses": []
+}

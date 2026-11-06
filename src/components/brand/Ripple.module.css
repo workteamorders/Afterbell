@@ -1,0 +1,57 @@
+.ripple {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ring {
+  grid-area: 1 / 1;
+  width: 8rem;
+  height: 8rem;
+  border: var(--stroke) solid var(--contour);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.2);
+  animation: expand 560ms var(--ease-out) forwards;
+}
+
+.ring:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+.ring:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+@keyframes expand {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring {
+    animation-name: fade;
+    animation-duration: 300ms !important;
+    animation-delay: 0ms;
+  }
+}

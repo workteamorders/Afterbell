@@ -1,0 +1,148 @@
+.btn {
+  --_bg: transparent;
+  --_bg-hover: var(--surface-2);
+  --_bg-active: var(--surface-3);
+  --_fg: var(--text);
+  --_bd: var(--line);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--target);
+  padding-inline: var(--space-4);
+  border: var(--stroke) solid var(--_bd);
+  border-radius: var(--radius);
+  background: var(--_bg);
+  color: var(--_fg);
+  font-weight: 500;
+  font-stretch: 94%;
+  line-height: 1.1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--dur-micro) var(--ease-out);
+}
+
+.content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+/* Ukuran: semua >= 44px agar area sentuh cukup. */
+.sm {
+  min-height: 2.75rem;
+  padding-inline: var(--space-3);
+  font-size: var(--fs-14);
+}
+
+.md {
+  min-height: 3rem;
+  font-size: var(--fs-16);
+}
+
+.lg {
+  min-height: 3.5rem;
+  padding-inline: var(--space-6);
+  font-size: var(--fs-16);
+}
+
+.iconOnly {
+  padding-inline: 0;
+  width: var(--target);
+}
+
+.iconOnly.md {
+  width: 3rem;
+}
+
+.iconOnly.lg {
+  width: 3.5rem;
+}
+
+/* Varian */
+.primary {
+  --_bg: var(--accent);
+  --_bg-hover: var(--accent-hover);
+  --_bg-active: var(--accent-active);
+  --_fg: var(--on-accent);
+  --_bd: var(--accent);
+}
+
+.secondary {
+  --_bd: var(--line);
+}
+
+.ghost {
+  --_bd: transparent;
+}
+
+.danger {
+  --_fg: var(--danger);
+  --_bd: var(--danger);
+  --_bg-hover: var(--danger-bg);
+  --_bg-active: var(--danger-bg);
+}
+
+/* Hover hanya di perangkat yang punya hover; state paksa dipakai oleh /styleguide. */
+@media (hover: hover) {
+  .btn:hover:not(:disabled, [aria-disabled="true"]) {
+    background: var(--_bg-hover);
+  }
+}
+
+.btn[data-force="hover"] {
+  background: var(--_bg-hover);
+}
+
+/* Ditekan: bergeser dan mengecil, terasa fisik dalam 120ms. */
+.btn:active:not(:disabled, [aria-disabled="true"]),
+.btn[data-force="active"] {
+  background: var(--_bg-active);
+  transform: translateY(1px) scale(0.985);
+}
+
+.btn[data-force="focus"] {
+  outline: var(--stroke-strong) solid var(--focus);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  --_bg: var(--surface-2);
+  --_fg: var(--text-muted);
+  --_bd: var(--line-soft);
+  background: var(--_bg);
+  cursor: not-allowed;
+}
+
+.btn[aria-disabled="true"] {
+  cursor: progress;
+}
+
+/* Memuat: label tetap menempati ruang (visibility), jadi lebar tidak berubah. */
+.loading .content {
+  visibility: hidden;
+}
+
+.spinner {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--_fg);
+}
+
+.spinner svg {
+  animation: spin 800ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

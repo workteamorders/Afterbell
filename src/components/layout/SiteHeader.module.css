@@ -1,0 +1,132 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background: var(--surface);
+  border-block-end: var(--stroke) solid var(--line-soft);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: var(--header-h);
+}
+
+.home {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+  margin-inline-end: auto;
+  color: inherit;
+  text-decoration: none;
+}
+
+.nav {
+  display: none;
+}
+
+.list {
+  display: flex;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+  padding-inline: var(--space-3);
+  color: var(--text-muted);
+  font-weight: 500;
+  font-stretch: 94%;
+  text-decoration: none;
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  inset-inline: var(--space-3);
+  inset-block-end: var(--space-1);
+  height: var(--stroke-strong);
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-element) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .link:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+}
+
+.link[aria-current="page"] {
+  color: var(--text);
+}
+
+.link[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.wallet {
+  display: none;
+}
+
+.actions .menuBtn {
+  display: inline-flex;
+}
+
+@media (min-width: 64rem) {
+  .nav {
+    display: block;
+    margin-inline-end: var(--space-4);
+  }
+
+  .wallet {
+    display: block;
+  }
+
+  .actions .menuBtn {
+    display: none;
+  }
+}
+
+.drawerList {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+}
+
+.drawerLink {
+  display: flex;
+  align-items: center;
+  min-height: 3.5rem;
+  padding-inline: var(--space-3);
+  color: var(--text);
+  font-size: var(--fs-20);
+  font-weight: 500;
+  font-stretch: 108%;
+  text-decoration: none;
+  border-inline-start: var(--stroke-strong) solid transparent;
+}
+
+.drawerLink[aria-current="page"] {
+  border-inline-start-color: var(--accent);
+  background: var(--surface-2);
+}
+
+.drawerWallet {
+  padding-block-start: var(--space-4);
+  border-block-start: var(--stroke) solid var(--line-soft);
+}

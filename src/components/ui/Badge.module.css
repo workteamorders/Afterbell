@@ -1,0 +1,84 @@
+.badge {
+  --_fg: var(--text);
+  --_bg: var(--surface-3);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  background: var(--_bg);
+  color: var(--_fg);
+  border: var(--stroke) solid transparent;
+  border-radius: var(--radius);
+  font-size: var(--fs-12);
+  font-weight: 500;
+  font-stretch: var(--stretch-label);
+  letter-spacing: var(--track-label);
+  line-height: 1.3;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.neutral {
+  border-color: var(--line);
+}
+
+.success {
+  --_fg: var(--success);
+  --_bg: var(--success-bg);
+}
+
+.warning {
+  --_fg: var(--warning);
+  --_bg: var(--warning-bg);
+}
+
+.danger {
+  --_fg: var(--danger);
+  --_bg: var(--danger-bg);
+}
+
+.info {
+  --_fg: var(--info);
+  --_bg: var(--info-bg);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--target);
+  padding-inline: var(--space-4);
+  background: transparent;
+  color: var(--text);
+  border: var(--stroke) solid var(--line);
+  border-radius: var(--radius);
+  font-size: var(--fs-14);
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform var(--dur-micro) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .chip:hover:not(:disabled) {
+    background: var(--surface-2);
+  }
+}
+
+.chip[data-force="hover"] {
+  background: var(--surface-2);
+}
+
+.chip:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.chipOn {
+  background: var(--surface-3);
+  border-color: var(--text);
+}
+
+.chip:disabled {
+  color: var(--text-muted);
+  border-color: var(--line-soft);
+  cursor: not-allowed;
+}

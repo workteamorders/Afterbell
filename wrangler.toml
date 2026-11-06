@@ -1,0 +1,11 @@
+name = "afterbell"
+compatibility_date = "2026-11-01"
+pages_build_output_dir = "out"
+
+# Rate Limiting binding (opsional). Ketersediaan di plan gratis belum dikonfirmasi (docs/DECISIONS.md D-005).
+# Bila tidak tersedia, function memakai token bucket per isolate. Hapus blok ini bila deploy menolaknya.
+# [[unsafe.bindings]]
+# name = "RATE_LIMITER"
+# type = "ratelimit"
+# namespace_id = "1001"
+# simple = { limit = 120, period = 60 }

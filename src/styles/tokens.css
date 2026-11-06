@@ -1,0 +1,190 @@
+/*
+ * Afterbell design tokens. Satu-satunya berkas yang boleh memuat nilai visual mentah.
+ * Komponen hanya memakai var(--token). Nama token menurut peran, bukan menurut warna.
+ *
+ * Arah visual: "Sounding Chart" (peta laut). Mode terang = chart siang, mode gelap = chart malam.
+ * Kedua mode didefinisikan penuh; tidak ada warna yang dibalik otomatis.
+ * Pilihan mode: sistem pengguna menentukan; tombol tema menimpa lewat [data-theme].
+ * Alasan dua mode: peta kapal punya palet siang dan malam, dan pengguna sering membuka
+ * aplikasi di malam hari waktu mereka saat pasar AS buka.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Permukaan: tiga kedalaman tint. Lapisan dibedakan oleh nada, bukan oleh bayangan. */
+  --surface: #f5f8f6;
+  --surface-2: #e2eeec;
+  --surface-3: #cde1df;
+
+  /* Teks */
+  --text: #11252a;
+  --text-muted: #43595f;
+
+  /* Aksen utama: satu-satunya hal terpenting yang bisa dilakukan pengguna di layar. */
+  --accent: #a01e6c;
+  --accent-hover: #8a1859;
+  --accent-active: #761249;
+  --on-accent: #ffffff;
+
+  /* Aksen pendukung: kontur, tautan, data. */
+  --contour: #1c6b74;
+
+  /* Status */
+  --success: #17663f;
+  --danger: #b3261e;
+  --warning: #7f4f00;
+  --info: #2a5c9a;
+  --success-bg: #dcefe2;
+  --danger-bg: #f9e1de;
+  --warning-bg: #f7e8cb;
+  --info-bg: #dde9f7;
+
+  /* Garis. --line wajib terlihat (batas komponen, 3:1). --line-soft hanya pemisah dekoratif. */
+  --line: #6a8589;
+  --line-soft: #bcd0cf;
+  --focus: #a01e6c;
+  --scrim: rgb(17 37 42 / 0.52);
+
+  /* Elevasi: 0 datar, 1 terangkat, 2 melayang (dialog, sheet, popover). */
+  --elev-1-bg: var(--surface-2);
+  --elev-2-shadow: 0 12px 32px rgb(17 37 42 / 0.16), 0 2px 6px rgb(17 37 42 / 0.08);
+
+  /* Tipografi: keluarga */
+  --font-sans: var(--font-archivo), "Arial", "Helvetica Neue", sans-serif;
+  --font-mono: var(--font-red-hat-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Tipografi: skala tetap (rasio sekitar 1,2 sampai 1,25). Nilai rem berbasis 16px. */
+  --fs-12: 0.75rem;
+  --fs-14: 0.875rem;
+  --fs-16: 1rem;
+  --fs-20: 1.25rem;
+  --fs-24: 1.5rem;
+  --fs-32: 2rem;
+  --fs-44: 2.75rem;
+  --fs-60: 3.75rem;
+
+  /* Judul memakai clamp agar mengecil mulus di HP (360px) sampai desktop. */
+  --fs-display: clamp(2.25rem, 1.4rem + 4vw, var(--fs-60));
+  --fs-h1: clamp(1.75rem, 1.2rem + 2.4vw, var(--fs-44));
+  --fs-h2: clamp(var(--fs-24), 1.2rem + 1vw, var(--fs-32));
+  --fs-h3: var(--fs-20);
+
+  --lh-display: 1.05;
+  --lh-heading: 1.15;
+  --lh-body: 1.6;
+  --lh-tight: 1.35;
+
+  /* Lebar huruf Archivo: expanded untuk judul, normal untuk isi, semi-condensed untuk label dan tabel. */
+  --stretch-heading: 118%;
+  --stretch-body: 100%;
+  --stretch-label: 87%;
+
+  --track-label: 0.06em;
+  --measure: 68ch;
+
+  /* Jarak: kelipatan 4. Tiga ritme: rapat, sedang, lapang. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --rhythm-tight: var(--space-2);
+  --rhythm-mid: var(--space-6);
+  --rhythm-wide: var(--space-16);
+
+  /* Bentuk: satu bahasa. */
+  --radius: 4px;
+  --stroke: 1px;
+  --stroke-strong: 2px;
+
+  /* Tata letak */
+  --container: 75rem;
+  --gutter: var(--space-4);
+  --target: 2.75rem;
+  --header-h: 3.5rem;
+
+  /* Gerak: satu karakter, "mengendap seperti air tenang". Ease-out tanpa pantulan. */
+  --dur-micro: 120ms;
+  --dur-element: 200ms;
+  --dur-panel: 320ms;
+  --ease-out: cubic-bezier(0.16, 0.84, 0.3, 1);
+  --ease-in: cubic-bezier(0.5, 0, 0.9, 0.4);
+
+  --z-header: 20;
+  --z-overlay: 40;
+  --z-toast: 60;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gutter: var(--space-6);
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --gutter: var(--space-8);
+  }
+}
+
+/* Chart malam */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #0b1517;
+  --surface-2: #12201f;
+  --surface-3: #1a2c2c;
+  --text: #d5e4e1;
+  --text-muted: #93a9a7;
+  --accent: #e57db9;
+  --accent-hover: #ee97c9;
+  --accent-active: #d966ab;
+  --on-accent: #0b1517;
+  --contour: #6fc0c4;
+  --success: #5fc98f;
+  --danger: #ff8a80;
+  --warning: #e9a94c;
+  --info: #8eb4ee;
+  --success-bg: #123424;
+  --danger-bg: #3a1b1a;
+  --warning-bg: #3a2a10;
+  --info-bg: #172a45;
+  --line: #5f7b7a;
+  --line-soft: #263a3b;
+  --focus: #e57db9;
+  --scrim: rgb(0 0 0 / 0.6);
+  --elev-2-shadow: 0 12px 32px rgb(0 0 0 / 0.5), 0 2px 6px rgb(0 0 0 / 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface: #0b1517;
+    --surface-2: #12201f;
+    --surface-3: #1a2c2c;
+    --text: #d5e4e1;
+    --text-muted: #93a9a7;
+    --accent: #e57db9;
+    --accent-hover: #ee97c9;
+    --accent-active: #d966ab;
+    --on-accent: #0b1517;
+    --contour: #6fc0c4;
+    --success: #5fc98f;
+    --danger: #ff8a80;
+    --warning: #e9a94c;
+    --info: #8eb4ee;
+    --success-bg: #123424;
+    --danger-bg: #3a1b1a;
+    --warning-bg: #3a2a10;
+    --info-bg: #172a45;
+    --line: #5f7b7a;
+    --line-soft: #263a3b;
+    --focus: #e57db9;
+    --scrim: rgb(0 0 0 / 0.6);
+    --elev-2-shadow: 0 12px 32px rgb(0 0 0 / 0.5), 0 2px 6px rgb(0 0 0 / 0.3);
+  }
+}

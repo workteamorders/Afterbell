@@ -1,0 +1,8 @@
+.contour {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--contour);
+  stroke-width: 1;
+  opacity: 0.4;
+}

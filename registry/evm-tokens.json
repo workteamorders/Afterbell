@@ -1,0 +1,42 @@
+[
+  {
+    "symbol": "TSLAx",
+    "name": "Tesla xStock",
+    "underlying": "TSLA",
+    "chain": "ethereum",
+    "address": "0x8aD3c73F833d3F9A523aB01476625F269aEB7Cf0",
+    "issuer": "xstocks",
+    "addressSource": { "label": "xStocks public API", "url": "https://api.xstocks.fi/api/v2/public/assets/TSLAx" },
+    "lastChecked": "2026-11-04"
+  },
+  {
+    "symbol": "NVDAx",
+    "name": "NVIDIA xStock",
+    "underlying": "NVDA",
+    "chain": "ethereum",
+    "address": "0xc845b2894dBddd03858fd2D643B4eF725fE0849d",
+    "issuer": "xstocks",
+    "addressSource": { "label": "xStocks public API", "url": "https://api.xstocks.fi/api/v2/public/assets/NVDAx" },
+    "lastChecked": "2026-11-04"
+  },
+  {
+    "symbol": "CRCLx",
+    "name": "Circle xStock",
+    "underlying": "CRCL",
+    "chain": "ethereum",
+    "address": "0xfEbDEd1B0986a8ee107f5AB1a1c5a813491DeCEB",
+    "issuer": "xstocks",
+    "addressSource": { "label": "xStocks public API", "url": "https://api.xstocks.fi/api/v2/public/assets/CRCLx" },
+    "lastChecked": "2026-11-04"
+  },
+  {
+    "symbol": "SPYx",
+    "name": "SP500 xStock",
+    "underlying": "SPY",
+    "chain": "ethereum",
+    "address": "0x90A2a4c76b5D8c0bc892A69EA28Aa775a8f2dD48",
+    "issuer": "xstocks",
+    "addressSource": { "label": "xStocks public API", "url": "https://api.xstocks.fi/api/v2/public/assets/SPYx" },
+    "lastChecked": "2026-11-04"
+  }
+]
