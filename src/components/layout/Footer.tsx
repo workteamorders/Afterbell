@@ -35,7 +35,7 @@ export function Footer() {
             Afterbell is non-custodial. Your wallet signs every transaction and Afterbell never holds your keys or funds. Nothing here is investment advice.
           </p>
           <p className="type-small muted">
-            Solana swaps are routed by <a href="https://jup.ag" rel="noopener noreferrer">Jupiter</a>. Ethereum swaps go through Uniswap v3. Powered by Jupiter.
+            Solana swaps are routed by <a href="https://jup.ag" rel="noopener noreferrer">Jupiter</a>. Ethereum swaps go through Uniswap v3 and Robinhood Chain swaps through Uniswap v4. Powered by Jupiter.
           </p>
         </div>
         {COLUMNS.map((col) => (

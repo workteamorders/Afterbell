@@ -13,7 +13,7 @@ const sections: DocSection[] = [
     title: "What stays in your browser",
     body: (
       <ul>
-        <li>Your theme, slippage setting, last Solana and Ethereum wallet names, and the fact that you read the risk notice are saved in local storage.</li>
+        <li>Your theme, slippage setting, last Solana and EVM wallet names, and the fact that you read the risk notice are saved in local storage.</li>
         <li>Your swap history for this visit is kept in session storage and disappears when you close the tab.</li>
         <li>There are no accounts and no sign-up.</li>
       </ul>
@@ -25,7 +25,7 @@ const sections: DocSection[] = [
     body: (
       <ul>
         <li>
-          <strong>Afterbell&apos;s relay</strong> (<code>/api/rpc</code>) receives Solana and Ethereum requests, such as balance lookups, price quotes from Uniswap&apos;s on-chain quoter, and transaction simulations, and passes them to an RPC provider. It also reads your country from the network edge to decide whether buying and selling are on. It does not store your address or country.
+          <strong>Afterbell&apos;s relay</strong> (<code>/api/rpc</code>) receives Solana, Ethereum, and Robinhood Chain requests, such as balance lookups, price quotes from Uniswap&apos;s on-chain quoter, and transaction simulations, and passes them to an RPC provider. It also reads your country from the network edge to decide whether buying and selling are on. It does not store your address or country.
         </li>
         <li>
           <strong>Jupiter</strong> receives quote and swap requests, including your wallet address when you review a swap.
@@ -51,7 +51,7 @@ const sections: DocSection[] = [
   {
     id: "public",
     title: "Blockchain data is public",
-    body: <p>Transactions on Solana and Ethereum are public and permanent. Anyone can see them with your wallet address.</p>,
+    body: <p>Transactions on Solana, Ethereum, and Robinhood Chain are public and permanent. Anyone can see them with your wallet address.</p>,
   },
 ];
 

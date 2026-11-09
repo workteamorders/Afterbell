@@ -9,6 +9,7 @@ const STRUCTURE_LABEL: Record<Issuer["structure"], string> = {
   "structured-note": "Structured note",
   "spv-claim": "Claim on a holding vehicle",
   "synthetic-spv": "Synthetic exposure",
+  "debt-security": "Tokenised debt security",
 };
 
 /** Hak pemegang menurut penerbit. Selalu menampilkan sumber dan tanggal periksa. Ringkasan editorial, bukan nasihat hukum. */

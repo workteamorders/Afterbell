@@ -232,3 +232,62 @@ describe("/api/rpc EVM mode", () => {
     expect(await res.text()).not.toMatch(/SECRET-ETH-KEY/);
   });
 });
+
+/* ---------------- Mode EVM (?chain=robinhood) ---------------- */
+const RH_URL = `${ORIGIN}/api/rpc?chain=robinhood`;
+const RH_UR = EVM_CHAINS.robinhood.uniswapV4.universalRouter;
+const RH_QUOTER = EVM_CHAINS.robinhood.uniswapV4.quoter;
+const rhEnv: RpcEnv = { ...env, EVM_RPC_UPSTREAM_URL_ETHEREUM: "https://eth-upstream.invalid/ETH", EVM_RPC_UPSTREAM_URL_ROBINHOOD: "https://rh-upstream.invalid/SECRET-RH-KEY" };
+
+describe("/api/rpc Robinhood Chain mode", () => {
+  it("uses the Robinhood upstream and never the Ethereum or Solana one", async () => {
+    let url = "";
+    const f = (async (u: string) => ((url = u), new Response('{"jsonrpc":"2.0","id":1,"result":"0x1237"}'))) as unknown as typeof fetch;
+    expect((await handleRpc(postEvm(rpc("eth_chainId", []), {}, RH_URL), rhEnv, { fetchImpl: f })).status).toBe(200);
+    expect(url).toBe("https://rh-upstream.invalid/SECRET-RH-KEY");
+  });
+  it("treats Universal Router calls and gas estimates as trade calls, but not quoter calls", () => {
+    expect(isEvmTradeCall("eth_call", callParams(RH_UR))).toBe(true);
+    expect(isEvmTradeCall("eth_call", callParams(RH_UR.toLowerCase()))).toBe(true);
+    expect(isEvmTradeCall("eth_call", callParams(RH_QUOTER))).toBe(false);
+    expect(isEvmTradeCall("eth_estimateGas", [{ to: RH_QUOTER }])).toBe(true);
+  });
+  it("blocks simulation of Universal Router trades from blocked countries but still serves quotes", async () => {
+    const h = { "cf-ipcountry": "IR" };
+    const f = { fetchImpl: upstreamOk as typeof fetch };
+    expect((await handleRpc(postEvm(rpc("eth_call", callParams(RH_UR)), h, RH_URL), rhEnv, f)).status).toBe(403);
+    expect((await handleRpc(postEvm(rpc("eth_call", callParams(RH_QUOTER)), h, RH_URL), rhEnv, f)).status).toBe(200);
+  });
+  it("is not configured without its own upstream, and never falls back to the Ethereum one", async () => {
+    const onlyEth: RpcEnv = { ...env, EVM_RPC_UPSTREAM_URL_ETHEREUM: "https://eth-upstream.invalid/ETH" };
+    expect((await handleRpc(postEvm(rpc("eth_chainId", []), {}, RH_URL), onlyEth, { fetchImpl: upstreamOk as typeof fetch })).status).toBe(503);
+  });
+  it("uses the public Robinhood RPC only with the explicit dev flag", async () => {
+    let url = "";
+    await handleRpc(postEvm(rpc("eth_chainId", []), {}, RH_URL), { ALLOW_DEFAULT_UPSTREAM: "1" }, { fetchImpl: (async (u: string) => ((url = u), new Response('{"jsonrpc":"2.0","id":1,"result":"0x1237"}'))) as unknown as typeof fetch });
+    expect(url).toBe("https://rpc.mainnet.chain.robinhood.com");
+  });
+  it("never leaks the Robinhood upstream key", async () => {
+    const res = await handleRpc(postEvm(rpc("eth_chainId", []), {}, RH_URL), rhEnv, { fetchImpl: (async () => { throw new Error("https://rh-upstream.invalid/SECRET-RH-KEY"); }) as typeof fetch });
+    expect(res.status).toBe(504);
+    expect(await res.text()).not.toMatch(/SECRET-RH-KEY/);
+  });
+});
+
+describe("/api/rpc on Vercel", () => {
+  const vercelEnv = { ...env, VERCEL: "1" };
+  it("reads the country from the Vercel header and ignores a Cloudflare header sent by the client", async () => {
+    const mk = (h: Record<string, string>) => new Request(URL_, { method: "GET", headers: h });
+    expect(await (await handleRpc(mk({ "x-vercel-ip-country": "KP" }), vercelEnv)).json()).toEqual({ country: "KP", blocked: true });
+    expect(await (await handleRpc(mk({ "cf-ipcountry": "ID" }), vercelEnv)).json()).toEqual({ country: null, blocked: false });
+    expect(await (await handleRpc(mk({ "x-vercel-ip-country": "ID", "cf-ipcountry": "KP" }), vercelEnv)).json()).toEqual({ country: "ID", blocked: false });
+  });
+  it("rate limits per x-real-ip, not per spoofable Cloudflare header", async () => {
+    resetBuckets();
+    const small = { ...vercelEnv, RATE_LIMIT_PER_MINUTE: "1" };
+    const mk = (ip: string, cf: string) => post(rpc("getBalance"), { "x-real-ip": ip, "cf-connecting-ip": cf });
+    const deps = { fetchImpl: upstreamOk as typeof fetch };
+    expect((await handleRpc(mk("5.5.5.5", "a"), small, deps)).status).toBe(200);
+    expect((await handleRpc(mk("5.5.5.5", "b"), small, deps)).status).toBe(429);
+  });
+});

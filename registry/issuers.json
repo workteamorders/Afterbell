@@ -10,9 +10,18 @@
     "regionRestrictions": "Not marketed, offered or solicited in the United States or to U.S. Persons, or in other prohibited jurisdictions. The issuer's terms hold the full list.",
     "restrictsUsPersons": true,
     "sources": [
-      { "label": "xStocks: Product Legal Overview", "url": "https://docs.xstocks.fi/docs/product-legal-overview" },
-      { "label": "xStocks: Issuance and Redemption", "url": "https://docs.xstocks.fi/docs/issuance-and-redemption" },
-      { "label": "xStocks: Dividends and Stock Splits", "url": "https://docs.xstocks.fi/docs/dividends-and-stock-splits" }
+      {
+        "label": "xStocks: Product Legal Overview",
+        "url": "https://docs.xstocks.fi/docs/product-legal-overview"
+      },
+      {
+        "label": "xStocks: Issuance and Redemption",
+        "url": "https://docs.xstocks.fi/docs/issuance-and-redemption"
+      },
+      {
+        "label": "xStocks: Dividends and Stock Splits",
+        "url": "https://docs.xstocks.fi/docs/dividends-and-stock-splits"
+      }
     ],
     "lastChecked": "2026-11-04"
   },
@@ -27,8 +36,14 @@
     "regionRestrictions": "Not available in the United States and a long list of other jurisdictions. The issuer's eligibility page holds the full list.",
     "restrictsUsPersons": true,
     "sources": [
-      { "label": "Ondo: Legal and Regulatory", "url": "https://docs.ondo.finance/ondo-stocks/legal-and-regulatory" },
-      { "label": "Ondo: Eligibility", "url": "https://docs.ondo.finance/ondo-stocks/eligibility" }
+      {
+        "label": "Ondo: Legal and Regulatory",
+        "url": "https://docs.ondo.finance/ondo-stocks/legal-and-regulatory"
+      },
+      {
+        "label": "Ondo: Eligibility",
+        "url": "https://docs.ondo.finance/ondo-stocks/eligibility"
+      }
     ],
     "lastChecked": "2026-11-04"
   },
@@ -43,7 +58,10 @@
     "regionRestrictions": "Stated as not available in the United States, United Kingdom, UAE and Japan, and not on Backpack EU.",
     "restrictsUsPersons": true,
     "sources": [
-      { "label": "Backpack: How to buy SpaceX stock", "url": "https://learn.backpack.exchange/articles/how-to-buy-spacex-stock" }
+      {
+        "label": "Backpack: How to buy SpaceX stock",
+        "url": "https://learn.backpack.exchange/articles/how-to-buy-spacex-stock"
+      }
     ],
     "lastChecked": "2026-11-04"
   },
@@ -58,8 +76,37 @@
     "regionRestrictions": "Not for the United States or U.S. persons.",
     "restrictsUsPersons": true,
     "sources": [
-      { "label": "PreStocks", "url": "https://prestocks.com" }
+      {
+        "label": "PreStocks",
+        "url": "https://prestocks.com"
+      }
     ],
     "lastChecked": "2026-11-04"
+  },
+  {
+    "id": "robinhood",
+    "name": "Robinhood Stock Tokens",
+    "legalEntity": "Robinhood Assets (Jersey) Limited",
+    "structure": "debt-security",
+    "rightsLabel": "Tokenised debt security. Economic exposure only.",
+    "rightsSummary": "Robinhood describes Stock Tokens as tokenised debt securities issued by Robinhood Assets (Jersey) Limited. They give economic exposure to a US share or ETF but no legal or beneficial rights in the underlying security. Dividends and stock splits change an onchain multiplier (ERC-8056 uiMultiplier) instead of your token balance, which stays the same until redemption.",
+    "redemptionPath": "Only Authorised Participants, after business onboarding (KYB), can subscribe or redeem directly with the issuer. Everyone else buys and sells on the market.",
+    "regionRestrictions": "Not registered under US securities laws and cannot be offered or sold to US persons. Offers are also restricted in other jurisdictions, including Canada, the UK and Switzerland. The issuer's page holds the full list.",
+    "restrictsUsPersons": true,
+    "sources": [
+      {
+        "label": "Robinhood Chain: Stock Tokens overview",
+        "url": "https://docs.robinhood.com/chain/stock-tokens"
+      },
+      {
+        "label": "Robinhood Chain: Building with Stock Tokens",
+        "url": "https://docs.robinhood.com/chain/building-with-stock-tokens"
+      },
+      {
+        "label": "Robinhood Stock Tokens: regional restrictions",
+        "url": "https://docs.robinhood.com/rhj"
+      }
+    ],
+    "lastChecked": "2026-11-07"
   }
 ]

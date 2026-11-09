@@ -14,47 +14,69 @@ import { CONFIG } from "@/lib/config";
 import { loadHistory, type HistoryEntry } from "@/lib/history";
 import { lamportsToSol, explorerUrl } from "@/lib/swap";
 import { loadPortfolio, type Holding, type Portfolio } from "@/lib/portfolio";
-import { EVM_CHAINS, getEvmChain } from "@/lib/evm/chains";
+import { EVM_CHAINS, evmTokenPath, explorerTxBase, getEvmChain } from "@/lib/evm/chains";
 import { readDecimals, readErc20Balance } from "@/lib/evm/tokens";
 import { EVM_TOKENS, TOKENS, getIssuer } from "@/lib/registry";
 import styles from "./PortfolioView.module.css";
 
 interface EvmHolding {
+  chain: string;
   symbol: string;
   name: string;
   issuer: string;
   ui: number;
 }
 
-/** Saldo token registry di Ethereum untuk dompet EVM yang terhubung. Dibaca langsung dari kontrak (balanceOf). */
-function EvmSection() {
+/** Menjalankan `fn` untuk semua item dengan paling banyak `limit` permintaan sekaligus, supaya RPC publik tidak kewalahan. */
+async function mapLimited<T, R>(items: readonly T[], limit: number, fn: (item: T) => Promise<R>): Promise<R[]> {
+  const out: R[] = new Array(items.length);
+  let next = 0;
+  await Promise.all(
+    Array.from({ length: Math.min(limit, items.length) }, async () => {
+      while (next < items.length) {
+        const i = next++;
+        out[i] = await fn(items[i] as T);
+      }
+    }),
+  );
+  return out;
+}
+
+/** Saldo token registry di satu chain EVM untuk dompet EVM yang terhubung. Dibaca langsung dari kontrak (balanceOf). */
+function EvmSection({ chainId, prompt = false }: { chainId: "ethereum" | "robinhood"; prompt?: boolean }) {
   const wallet = useEvmWallet();
   const [picker, setPicker] = useState(false);
   const [rows, setRows] = useState<EvmHolding[] | null>(null);
   const [failed, setFailed] = useState(false);
   const [loading, setLoading] = useState(false);
   const address = wallet.address;
+  const chainName = EVM_CHAINS[chainId].name;
 
   const load = useCallback(async () => {
     if (!address) return;
     setLoading(true);
     setFailed(false);
     try {
-      const chain = getEvmChain("ethereum");
+      const chain = getEvmChain(chainId);
       if (!chain) throw new Error("no chain");
-      const out = await Promise.all(
-        EVM_TOKENS.map(async (t) => {
-          const [bal, dec] = await Promise.all([readErc20Balance(chain, t.address, address), readDecimals(chain, t.address)]);
-          return { symbol: t.symbol, name: t.name, issuer: t.issuer, ui: Number(bal) / 10 ** dec, raw: bal };
-        }),
+      const tokens = EVM_TOKENS.filter((t) => t.chain === chainId);
+      // Saldo dibaca dulu; decimals hanya untuk token yang benar-benar dipegang.
+      const balances = await mapLimited(tokens, 8, async (t) => ({ t, bal: await readErc20Balance(chain, t.address, address) }));
+      const held = await Promise.all(
+        balances
+          .filter((b) => b.bal > 0n)
+          .map(async ({ t, bal }) => {
+            const dec = await readDecimals(chain, t.address);
+            return { symbol: t.symbol, name: t.name, issuer: t.issuer, chain: t.chain, ui: Number(bal) / 10 ** dec };
+          }),
       );
-      setRows(out.filter((r) => r.raw > 0n).map(({ raw: _raw, ...r }) => r));
+      setRows(held);
     } catch {
       setFailed(true);
     } finally {
       setLoading(false);
     }
-  }, [address]);
+  }, [address, chainId]);
 
   useEffect(() => {
     setRows(null);
@@ -67,7 +89,7 @@ function EvmSection() {
       header: "Token",
       sortValue: (h) => h.symbol.toLowerCase(),
       cell: (h) => (
-        <Link href={`/e/${h.symbol}`}>
+        <Link href={evmTokenPath(h)}>
           <strong>{h.symbol}</strong> <span className="muted">{h.name}</span>
         </Link>
       ),
@@ -76,25 +98,28 @@ function EvmSection() {
     { key: "amount", header: "Amount", numeric: true, sortValue: (h) => h.ui, cell: (h) => formatNumber(h.ui, 6) },
   ];
 
+  // Satu ajakan menyambung wallet saja: bagian chain lain tampil setelah wallet tersambung.
+  if (!prompt && (wallet.status !== "connected" || !address)) return null;
+
   return (
-    <section aria-labelledby="eth-h" className={styles.history}>
-      <h2 id="eth-h" className="type-h2">
-        On Ethereum
+    <section aria-labelledby={`${chainId}-h`} className={styles.history}>
+      <h2 id={`${chainId}-h`} className="type-h2">
+        On {chainName}
       </h2>
       {wallet.status !== "connected" || !address ? (
         <div className={styles.compact}>
-          <p className="muted">Ethereum balances need an Ethereum wallet. It is separate from your Solana wallet, and Afterbell cannot move anything without your approval.</p>
+          <p className="muted">{chainName} balances need an EVM wallet. It is separate from your Solana wallet, and Afterbell cannot move anything without your approval.</p>
           <div>
             <Button variant="secondary" size="sm" icon="wallet" loading={wallet.status === "connecting"} onClick={() => setPicker(true)}>
-              Connect Ethereum wallet
+              Connect EVM wallet
             </Button>
           </div>
           <EvmWalletPicker open={picker} onClose={() => setPicker(false)} />
         </div>
       ) : failed ? (
         <ErrorState
-          title="Ethereum balances did not load"
-          what="Afterbell could not read your balances from Ethereum."
+          title={`${chainName} balances did not load`}
+          what={`Afterbell could not read your balances from ${chainName}.`}
           safety="Nothing was changed. Your funds are where they were."
           next="Try again in a moment."
           actions={
@@ -105,19 +130,19 @@ function EvmSection() {
         />
       ) : !rows ? (
         <div className={styles.skeleton} aria-busy="true" role="status">
-          <span className="sr-only">Loading Ethereum balances</span>
+          <span className="sr-only">Loading {chainName} balances</span>
           <Skeleton shape="block" />
         </div>
       ) : rows.length === 0 ? (
         <p className="muted">
-          No registry tokens found for <code>{shortAddress(address)}</code> on {EVM_CHAINS.ethereum.name}.
+          No registry tokens found for <code>{shortAddress(address)}</code> on {chainName}.
         </p>
       ) : (
         <>
           <p className="type-small muted">
             Showing <code>{shortAddress(address)}</code>
           </p>
-          <DataTable caption="Registry tokens in your Ethereum wallet" columns={columns} rows={rows} rowKey={(h) => h.symbol} initialSort={{ key: "amount", dir: "desc" }} />
+          <DataTable caption={`Registry tokens in your wallet on ${chainName}`} columns={columns} rows={rows} rowKey={(h) => h.symbol} initialSort={{ key: "amount", dir: "desc" }} />
         </>
       )}
     </section>
@@ -248,7 +273,8 @@ export function PortfolioView() {
         </>
       )}
 
-      <EvmSection />
+      <EvmSection chainId="ethereum" prompt />
+      <EvmSection chainId="robinhood" />
 
       <section aria-labelledby="hist-h" className={styles.history}>
         <h2 id="hist-h" className="type-h2">
@@ -263,7 +289,7 @@ export function PortfolioView() {
                 <span>
                   {h.side === "buy" ? "Bought" : "Sold"} {h.symbol}: {h.inAmount} {h.inSymbol} for {h.outAmount} {h.outSymbol}
                 </span>
-                <a href={explorerUrl(h.network === "ethereum" ? EVM_CHAINS.ethereum.explorerTx : CONFIG.explorerTxBase, h.signature)} target="_blank" rel="noopener noreferrer">
+                <a href={explorerUrl((h.network ? explorerTxBase(h.network) : undefined) ?? CONFIG.explorerTxBase, h.signature)} target="_blank" rel="noopener noreferrer">
                   Explorer
                 </a>
               </li>

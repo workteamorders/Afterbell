@@ -10,9 +10,12 @@
     "test": "vitest run",
     "registry:check": "tsx scripts/registry-check.ts",
     "registry:validate": "tsx scripts/registry-check.ts --offline",
+    "registry:sync-robinhood": "tsx scripts/sync-robinhood.ts",
     "preview": "next build && wrangler pages dev out --compatibility-date=2026-11-01",
     "test:e2e": "playwright test",
-    "lint:bundle": "tsx scripts/check-bundle.ts"
+    "lint:bundle": "tsx scripts/check-bundle.ts",
+    "fork": "tsx scripts/fork.ts",
+    "preview:dev": "NEXT_PUBLIC_DEV_WALLET=1 next build && tsx scripts/dev-headers.ts && wrangler pages dev out --compatibility-date=2026-11-01"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "5.3.0",

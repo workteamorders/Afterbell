@@ -2,13 +2,14 @@ import Link from "next/link";
 import { EvmLiquidityPanel } from "@/components/evm/EvmLiquidityPanel";
 import { EvmSwapPanel } from "@/components/evm/EvmSwapPanel";
 import { Badge } from "@/components/ui/Badge";
+import { Notice } from "@/components/ui/StateBlock";
 import { Panel } from "@/components/ui/Panel";
 import { CopyText } from "@/components/token/CopyText";
 import { MarketBadge, MarketNotice } from "@/components/token/MarketNotice";
 import { PremiumNotice } from "@/components/token/PremiumNotice";
 import { RightsPanel } from "@/components/token/RightsPanel";
 import styles from "@/components/token/TokenView.module.css";
-import { getEvmChain } from "@/lib/evm/chains";
+import { getEvmChain, routerAddress, venueName } from "@/lib/evm/chains";
 import { notFound } from "next/navigation";
 import { getToken, type EvmToken, type Issuer } from "@/lib/registry";
 
@@ -29,7 +30,7 @@ export function EvmTokenView({ token, issuer }: { token: EvmToken; issuer: Issue
           {token.symbol} <span className="muted">{token.name}</span>
         </h1>
         <p className="type-body muted">
-          Tokenized exposure to {token.underlying} on {chain.name}. See what you hold, how deep the liquidity is, and the full cost before you sign.
+          {token.chain === "robinhood" ? `Stock Token for ${token.underlying}` : `Tokenized exposure to ${token.underlying}`} on {chain.name}. See what you hold, how deep the liquidity is, and the full cost before you sign.
           {onSolana ? (
             <>
               {" "}
@@ -38,6 +39,12 @@ export function EvmTokenView({ token, issuer }: { token: EvmToken; issuer: Issue
           ) : null}
         </p>
       </header>
+
+      {token.chain === "robinhood" ? (
+        <Notice tone="info" icon="info" title="Independent of Robinhood">
+          Afterbell is an independent app that works with Robinhood Chain. It is not affiliated with, endorsed by, or operated by Robinhood. Stock Tokens are issued by {issuer.legalEntity}.
+        </Notice>
+      ) : null}
 
       <div className={styles.grid}>
         <div className={styles.swap}>
@@ -68,6 +75,12 @@ export function EvmTokenView({ token, issuer }: { token: EvmToken; issuer: Issue
                 <dt className="type-label">Network</dt>
                 <dd>
                   {chain.name} (chain ID {chain.chainId})
+                </dd>
+              </div>
+              <div>
+                <dt className="type-label">Swap route</dt>
+                <dd>
+                  {venueName(chain)} on {chain.name}, router <CopyText value={routerAddress(chain)} label={`${chain.name} router contract address`} />
                 </dd>
               </div>
               <div>

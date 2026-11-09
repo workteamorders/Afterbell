@@ -5,7 +5,7 @@ import { KEYS, readSession, writeSession } from "./storage";
 export const historyEntry = z.object({
   signature: z.string(),
   /** Entri lama tanpa field ini berasal dari Solana. */
-  network: z.enum(["solana", "ethereum"]).optional(),
+  network: z.enum(["solana", "ethereum", "robinhood"]).optional(),
   at: z.number(),
   side: z.enum(["buy", "sell"]),
   symbol: z.string(),

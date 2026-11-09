@@ -15,6 +15,7 @@ import {
   type EvmWallet,
   type TxRequest,
 } from "@/lib/evm/wallet";
+import type { EvmChain } from "@/lib/evm/chains";
 import styles from "@/components/wallet/WalletButton.module.css";
 
 type Status = "disconnected" | "connecting" | "connected";
@@ -28,8 +29,8 @@ interface EvmWalletState {
   error?: string;
   connect: (w: EvmWallet) => Promise<void>;
   disconnect: () => void;
-  /** Meminta wallet pindah ke chain yang dibutuhkan. Mengembalikan true bila chain sudah benar. */
-  ensureChain: (chainId: number) => Promise<boolean>;
+  /** Meminta wallet pindah ke chain yang dibutuhkan (menambahkannya bila belum dikenal). Mengembalikan true bila chain sudah benar. */
+  ensureChain: (chain: EvmChain) => Promise<boolean>;
   send: (tx: Omit<TxRequest, "from">) => Promise<string>;
 }
 
@@ -114,14 +115,15 @@ export function EvmWalletProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const ensureChain = useCallback(
-    async (wanted: number) => {
+    async (wanted: EvmChain) => {
       if (!active) return false;
-      if (chainId === wanted) return true;
+      if (chainId === wanted.chainId) return true;
       try {
-        await switchChain(active.wallet.provider, wanted);
+        const add = wanted.walletAdd ? { ...wanted.walletAdd, nativeSymbol: wanted.nativeSymbol } : undefined;
+        await switchChain(active.wallet.provider, wanted.chainId, add);
         const now = await walletChainId(active.wallet.provider);
         setChainId(now);
-        return now === wanted;
+        return now === wanted.chainId;
       } catch {
         return false;
       }
@@ -151,7 +153,7 @@ export function EvmWalletPicker({ open, onClose }: { open: boolean; onClose: () 
     <Dialog
       open={open}
       onClose={onClose}
-      title="Connect an Ethereum wallet"
+      title="Connect an EVM wallet"
       description="Pick a wallet installed in this browser. Your wallet asks you to approve every transaction."
       actions={
         <Button variant="ghost" onClick={onClose}>
@@ -160,8 +162,8 @@ export function EvmWalletPicker({ open, onClose }: { open: boolean; onClose: () 
       }
     >
       {w.wallets.length === 0 ? (
-        <Notice tone="info" title="No Ethereum wallet found in this browser">
-          Install an Ethereum wallet extension, then reload this page. Afterbell works with wallets that announce themselves through EIP-6963.
+        <Notice tone="info" title="No EVM wallet found in this browser">
+          Install an EVM wallet extension, then reload this page. Afterbell works with wallets that announce themselves through EIP-6963.
         </Notice>
       ) : (
         <ul role="list" className={styles.list}>

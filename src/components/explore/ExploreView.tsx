@@ -10,7 +10,7 @@ import { TextField } from "@/components/ui/Field";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/StateBlock";
 import { MarketBadge } from "@/components/token/MarketNotice";
-import { getEvmChain } from "@/lib/evm/chains";
+import { evmTokenPath, getEvmChain } from "@/lib/evm/chains";
 import {
   cachedEvmLiquidity,
   loadEvmLiquidity,
@@ -97,7 +97,7 @@ function DepthCell({ token, auto }: { token: Token; auto: boolean }) {
   );
 }
 
-type Network = "solana" | "ethereum";
+type Network = "solana" | "ethereum" | "robinhood";
 interface Row {
   network: Network;
   symbol: string;
@@ -122,13 +122,13 @@ const ROWS: Row[] = [
     sol: t,
   })),
   ...EVM_TOKENS.map((t): Row => ({
-    network: "ethereum",
+    network: t.chain,
     symbol: t.symbol,
     name: t.name,
     underlying: t.underlying,
     issuer: t.issuer,
-    key: `eth:${t.address}`,
-    href: `/e/${t.symbol}`,
+    key: `${t.chain}:${t.address}`,
+    href: evmTokenPath(t),
     evm: t,
   })),
 ];
@@ -150,7 +150,7 @@ function EvmDepthCell({ token }: { token: EvmToken }) {
         size="sm"
         variant="secondary"
         onClick={() => void run()}
-        aria-label={`Check depth for ${token.symbol} on Ethereum`}
+        aria-label={`Check depth for ${token.symbol} on ${chain?.name ?? "this network"}`}
       >
         Check depth
       </Button>
@@ -162,7 +162,7 @@ function EvmDepthCell({ token }: { token: EvmToken }) {
         variant="ghost"
         icon="refresh"
         onClick={() => void run()}
-        aria-label={`Retry depth for ${token.symbol} on Ethereum`}
+        aria-label={`Retry depth for ${token.symbol} on ${chain?.name ?? "this network"}`}
       >
         Try again
       </Button>
@@ -227,7 +227,7 @@ export function ExploreView() {
       key: "network",
       header: "Network",
       sortValue: (t) => t.network,
-      cell: (t) => (t.network === "solana" ? "Solana" : "Ethereum"),
+      cell: (t) => (t.network === "solana" ? "Solana" : (getEvmChain(t.network)?.name ?? t.network)),
     },
     {
       key: "issuer",
@@ -286,6 +286,12 @@ export function ExploreView() {
                 onPressedChange={(on) => setNetwork(on ? "ethereum" : null)}
               >
                 Ethereum
+              </Chip>
+              <Chip
+                pressed={network === "robinhood"}
+                onPressedChange={(on) => setNetwork(on ? "robinhood" : null)}
+              >
+                Robinhood Chain
               </Chip>
             </div>
           </div>
@@ -348,7 +354,7 @@ export function ExploreView() {
       )}
       <p className="type-note">
         Depth comes from live quotes at $100, $1,000, and $10,000 (Jupiter on
-        Solana, Uniswap v3 on Ethereum) and is cached for a few seconds. How it
+        Solana, Uniswap v3 on Ethereum, Uniswap v4 on Robinhood Chain) and is cached for a few seconds. How it
         is measured: <Link href="/methodology#liquidity">Methodology</Link>.
       </p>
     </div>

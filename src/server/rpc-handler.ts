@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getEvmChain, tradeTargets } from "../lib/evm/chains";
+import { getEvmChain, tradeTargets } from "../lib/evm/chains.js";
 
 /**
  * Relay RPC (satu-satunya kode server). Hanya metode BACA dan simulasi dalam allowlist.
@@ -47,17 +47,20 @@ export interface RpcEnv {
   RPC_UPSTREAM_URL?: string;
   /** Upstream per chain EVM, mis. EVM_RPC_UPSTREAM_URL_ETHEREUM. */
   EVM_RPC_UPSTREAM_URL_ETHEREUM?: string;
+  EVM_RPC_UPSTREAM_URL_ROBINHOOD?: string;
   /** "1" mengizinkan upstream publik bawaan untuk pengembangan lokal. Jangan dipakai di produksi. */
   ALLOW_DEFAULT_UPSTREAM?: string;
   ALLOWED_ORIGINS?: string;
   BLOCKED_COUNTRIES?: string;
   RATE_LIMIT_PER_MINUTE?: string;
   RATE_LIMITER?: RateLimitBinding;
+  /** Diset "1" oleh Vercel. Di Vercel hanya header Vercel yang dipercaya (Vercel menimpanya); header Cloudflare dari klien diabaikan. */
+  VERCEL?: string;
 }
 
 export const DEFAULT_DEV_UPSTREAM = "https://solana-rpc.publicnode.com";
 /** Ethereum publicnode: "Mainnet endpoint link" pada publicnode.com (diambil 2026-11-04). Hanya untuk pengembangan lokal. */
-export const DEFAULT_DEV_EVM_UPSTREAM: Record<string, string> = { ethereum: "https://ethereum.publicnode.com" };
+export const DEFAULT_DEV_EVM_UPSTREAM: Record<string, string> = { ethereum: "https://ethereum.publicnode.com", robinhood: "https://rpc.mainnet.chain.robinhood.com" };
 
 const requestSchema = z
   .object({
@@ -86,8 +89,8 @@ export function parseList(v: string | undefined): string[] {
     .filter(Boolean);
 }
 
-export function countryOf(request: Request): string | null {
-  const raw = request.headers.get("cf-ipcountry");
+export function countryOf(request: Request, env?: RpcEnv): string | null {
+  const raw = request.headers.get(env?.VERCEL === "1" ? "x-vercel-ip-country" : "cf-ipcountry");
   if (!raw) return null;
   const c = raw.trim().toUpperCase();
   return /^[A-Z]{2}$/.test(c) ? c : null;
@@ -126,7 +129,7 @@ export function resetBuckets(): void {
 }
 
 async function rateLimited(request: Request, env: RpcEnv, now: number): Promise<boolean> {
-  const ip = request.headers.get("cf-connecting-ip") ?? "unknown";
+  const ip = (env.VERCEL === "1" ? request.headers.get("x-real-ip") : request.headers.get("cf-connecting-ip")) ?? "unknown";
   if (env.RATE_LIMITER) {
     try {
       return !(await env.RATE_LIMITER.limit({ key: ip })).success;
@@ -252,7 +255,7 @@ export async function handleRpc(request: Request, env: RpcEnv, deps: HandleDeps 
 
   /* GET: status wilayah. Tidak membutuhkan Origin (dibaca halaman sendiri) dan tidak menyentuh upstream. */
   if (method === "GET") {
-    const country = countryOf(request);
+    const country = countryOf(request, env);
     return json({ country, blocked: isBlockedCountry(country, env) }, 200);
   }
 
@@ -290,7 +293,7 @@ export async function handleRpc(request: Request, env: RpcEnv, deps: HandleDeps 
   if (bad) return rpcError(req.id, -32602, bad, 400, corsHeaders);
 
   const isTrade = chain ? isEvmTradeCall(req.method, req.params) : TRADE_METHODS.has(req.method);
-  if (isTrade && isBlockedCountry(countryOf(request), env)) {
+  if (isTrade && isBlockedCountry(countryOf(request, env), env)) {
     return rpcError(req.id, -32003, "Trading is not available in your region.", 403, corsHeaders);
   }
 

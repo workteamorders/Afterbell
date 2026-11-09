@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { LiquidityMeter } from "@/components/ui/LiquidityMeter";
 import { Notice } from "@/components/ui/StateBlock";
 import styles from "@/components/token/LiquidityPanel.module.css";
-import type { EvmChain } from "@/lib/evm/chains";
+import { venueName, type EvmChain } from "@/lib/evm/chains";
 import { cachedEvmLiquidity, loadEvmLiquidity, type EvmLiquidityState } from "@/lib/evm/liquidity";
 import type { EvmToken } from "@/lib/registry";
 
@@ -15,7 +15,7 @@ function usd(list: number[]) {
   return list.map((n) => `$${n.toLocaleString("en-US")}`).join(", ");
 }
 
-/** Meter likuiditas untuk token di Ethereum. Kolam kecil ditampilkan apa adanya: ukuran yang tidak bisa diisi disebut. */
+/** Meter likuiditas untuk token di chain EVM. Kolam kecil ditampilkan apa adanya: ukuran yang tidak bisa diisi disebut. */
 export function EvmLiquidityPanel({ chain, token }: { chain: EvmChain; token: EvmToken }) {
   const [state, setState] = useState<EvmLiquidityState | "loading">(() => cachedEvmLiquidity(token) ?? "loading");
   const [updating, setUpdating] = useState(false);
@@ -47,6 +47,7 @@ export function EvmLiquidityPanel({ chain, token }: { chain: EvmChain; token: Ev
       <div className={styles.wrap}>
         <LiquidityMeter
           state="unavailable"
+          quoteSource={venueName(chain)}
           retry={
             <Button size="sm" variant="secondary" icon="refresh" loading={updating} onClick={() => void refresh()}>
               Try again
@@ -62,9 +63,12 @@ export function EvmLiquidityPanel({ chain, token }: { chain: EvmChain; token: Ev
       <div className={styles.wrap}>
         <Notice tone="warning" icon="alert" title="Thin pool: some order sizes cannot be filled">
           {state.filledUsd.length === 0
-            ? `Uniswap v3 on ${chain.name} could not fill even a $100 buy of ${token.symbol} just now.`
-            : `Uniswap v3 on ${chain.name} could fill ${usd(state.filledUsd)} but not ${usd(state.unfilledUsd)}.`}{" "}
-          A swap larger than the pool holds will be refused rather than filled at a bad price. Afterbell only checks the standard fee tiers, so a pool with another fee tier would not show here.
+            ? `${venueName(chain)} on ${chain.name} could not fill even a $100 buy of ${token.symbol} just now.`
+            : `${venueName(chain)} on ${chain.name} could fill ${usd(state.filledUsd)} but not ${usd(state.unfilledUsd)}.`}{" "}
+          A swap larger than the pool holds will be refused rather than filled at a bad price.{" "}
+          {chain.venue === "uniswap-v4"
+            ? `Afterbell only looks for standard ${chain.usd.symbol} pools without hooks. Liquidity in other kinds of pools, or in pools paired with another asset, would not show here.`
+            : "Afterbell only checks the standard fee tiers, so a pool with another fee tier would not show here."}
         </Notice>
         <Button size="sm" variant="secondary" icon="refresh" loading={updating} onClick={() => void refresh()}>
           Check again
@@ -73,5 +77,5 @@ export function EvmLiquidityPanel({ chain, token }: { chain: EvmChain; token: Ev
     );
   }
   const at = new Date(state.at).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-  return <LiquidityMeter level={state.result.level} points={state.result.points} route={state.result.route} source={`Uniswap v3 quotes on ${chain.name}, ${at}${updating ? ", updating" : ""}`} />;
+  return <LiquidityMeter level={state.result.level} points={state.result.points} route={state.result.route} source={`${venueName(chain)} quotes on ${chain.name}, ${at}${updating ? ", updating" : ""}`} />;
 }

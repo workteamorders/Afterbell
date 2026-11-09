@@ -1,5 +1,6 @@
 # Copy to .dev.vars for `pnpm preview` (wrangler pages dev). Values here are examples only.
-# In production set these in the Cloudflare Pages dashboard (Settings > Variables and Secrets).
+# In production set these in the Cloudflare Pages dashboard (Settings > Variables and Secrets), or on Vercel in
+# Project Settings > Environment Variables (same names; see D-067 and the Vercel note in README.md).
 RPC_UPSTREAM_URL=https://your-rpc-provider.example/your-key
 BLOCKED_COUNTRIES=KP,IR
 ALLOWED_ORIGINS=
@@ -8,3 +9,5 @@ RATE_LIMIT_PER_MINUTE=120
 ALLOW_DEFAULT_UPSTREAM=1
 # Ethereum upstream for /api/rpc?chain=ethereum. Without it (and without ALLOW_DEFAULT_UPSTREAM=1) Ethereum requests return 503.
 EVM_RPC_UPSTREAM_URL_ETHEREUM=https://your-ethereum-rpc-provider.example/your-key
+# Robinhood Chain upstream for /api/rpc?chain=robinhood. Robinhood's public RPC is rate-limited and not for production; use a provider endpoint (for example Alchemy) here.
+EVM_RPC_UPSTREAM_URL_ROBINHOOD=https://your-robinhood-chain-rpc-provider.example/your-key

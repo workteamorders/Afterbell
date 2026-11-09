@@ -9,4 +9,7 @@ next-env.d.ts
 .DS_Store
 .wrangler
 .dev.vars
+.fork
+.vercel
 test-results
+playwright-report

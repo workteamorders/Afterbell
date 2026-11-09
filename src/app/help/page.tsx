@@ -104,6 +104,20 @@ const sections: DocSection[] = [
     ),
   },
   {
+    id: "robinhood",
+    title: "Why did my Robinhood Chain swap ask for up to three requests?",
+    body: (
+      <>
+        <ul>
+          <li>Uniswap v4 moves your tokens through Permit2. The first request lets Permit2 move the exact amount, the second lets the Uniswap router use exactly that amount for a short time, and the last is the swap. Anything you already allowed is skipped.</li>
+          <li>All of them cost a network fee in ETH on Robinhood Chain. A wallet with no ETH there cannot send them.</li>
+          <li>You buy with USDG. Robinhood&apos;s own <a href="https://docs.robinhood.com/chain/bridging" target="_blank" rel="noopener noreferrer">bridging page</a> lists the supported ways to move assets onto the chain.</li>
+          <li>If your wallet does not know Robinhood Chain, Afterbell asks it to add the network with the official settings. Your wallet shows them for you to check.</li>
+        </ul>
+      </>
+    ),
+  },
+  {
     id: "closed",
     title: "The US market is closed. Can I still trade?",
     body: (

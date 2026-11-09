@@ -4,7 +4,7 @@ import { DocPage, type DocSection } from "@/components/page/DocPage";
 
 export const metadata: Metadata = {
   title: "Terms",
-  description: "Terms of use for Afterbell, a non-custodial interface for tokenized US stocks on Solana and Ethereum. Draft awaiting legal review.",
+  description: "Terms of use for Afterbell, a non-custodial interface for tokenized US stocks on Solana and Ethereum, and Stock Tokens on Robinhood Chain. Draft awaiting legal review.",
   alternates: { canonical: "/terms" },
 };
 
@@ -45,7 +45,7 @@ const sections: DocSection[] = [
     title: "Third parties",
     body: (
       <p>
-        Swaps on Solana are routed by Jupiter and swaps on Ethereum go through Uniswap v3. On-chain data comes from RPC providers. Their availability and terms are outside Afterbell&apos;s control. Prices, quotes, and fees come from them.
+        Swaps on Solana are routed by Jupiter, swaps on Ethereum go through Uniswap v3, and swaps on Robinhood Chain go through Uniswap v4. Robinhood Chain and Stock Tokens have their own terms from Robinhood, which you accept separately and which Afterbell does not control. Afterbell is independent and is not affiliated with Robinhood. On-chain data comes from RPC providers. Their availability and terms are outside Afterbell&apos;s control. Prices, quotes, and fees come from them.
       </p>
     ),
   },
@@ -54,7 +54,7 @@ const sections: DocSection[] = [
     title: "Fees",
     body: (
       <p>
-        Fees are shown before you sign. See <Link href="/methodology#fees">Methodology</Link>. Network fees go to Solana or Ethereum validators. Afterbell charges no fee on Ethereum swaps.
+        Fees are shown before you sign. See <Link href="/methodology#fees">Methodology</Link>. Network fees go to the network that processes the transaction. Afterbell charges no fee on Ethereum or Robinhood Chain swaps.
       </p>
     ),
   },

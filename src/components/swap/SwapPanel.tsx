@@ -157,7 +157,7 @@ export function SwapPanel({ token, issuer }: { token: Token; issuer: Issuer }) {
       <Panel as="section" aria-label="Swap" aria-busy="true" className={`${styles.panel} ${styles.loadingPanel}`}>
         <Skeleton shape="title" />
         {restricted ? (
-          <Notice tone="warning" icon="alert" title={`Check ${issuer.name}'s regional limits first`}>
+          <Notice tone="warning" icon="alert" title={`Check regional limits for ${issuer.name} first`}>
             <RestrictionText issuer={issuer} />
           </Notice>
         ) : null}
@@ -201,7 +201,7 @@ export function SwapPanel({ token, issuer }: { token: Token; issuer: Issuer }) {
       </div>
 
       {restricted ? (
-        <Notice tone="warning" icon="alert" title={`Check ${issuer.name}'s regional limits first`}>
+        <Notice tone="warning" icon="alert" title={`Check regional limits for ${issuer.name} first`}>
           <RestrictionText issuer={issuer} />
         </Notice>
       ) : null}

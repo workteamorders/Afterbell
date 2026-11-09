@@ -6,7 +6,10 @@
     "chain": "ethereum",
     "address": "0x8aD3c73F833d3F9A523aB01476625F269aEB7Cf0",
     "issuer": "xstocks",
-    "addressSource": { "label": "xStocks public API", "url": "https://api.xstocks.fi/api/v2/public/assets/TSLAx" },
+    "addressSource": {
+      "label": "xStocks public API",
+      "url": "https://api.xstocks.fi/api/v2/public/assets/TSLAx"
+    },
     "lastChecked": "2026-11-04"
   },
   {
@@ -16,7 +19,10 @@
     "chain": "ethereum",
     "address": "0xc845b2894dBddd03858fd2D643B4eF725fE0849d",
     "issuer": "xstocks",
-    "addressSource": { "label": "xStocks public API", "url": "https://api.xstocks.fi/api/v2/public/assets/NVDAx" },
+    "addressSource": {
+      "label": "xStocks public API",
+      "url": "https://api.xstocks.fi/api/v2/public/assets/NVDAx"
+    },
     "lastChecked": "2026-11-04"
   },
   {
@@ -26,7 +32,10 @@
     "chain": "ethereum",
     "address": "0xfEbDEd1B0986a8ee107f5AB1a1c5a813491DeCEB",
     "issuer": "xstocks",
-    "addressSource": { "label": "xStocks public API", "url": "https://api.xstocks.fi/api/v2/public/assets/CRCLx" },
+    "addressSource": {
+      "label": "xStocks public API",
+      "url": "https://api.xstocks.fi/api/v2/public/assets/CRCLx"
+    },
     "lastChecked": "2026-11-04"
   },
   {
@@ -36,7 +45,1271 @@
     "chain": "ethereum",
     "address": "0x90A2a4c76b5D8c0bc892A69EA28Aa775a8f2dD48",
     "issuer": "xstocks",
-    "addressSource": { "label": "xStocks public API", "url": "https://api.xstocks.fi/api/v2/public/assets/SPYx" },
+    "addressSource": {
+      "label": "xStocks public API",
+      "url": "https://api.xstocks.fi/api/v2/public/assets/SPYx"
+    },
     "lastChecked": "2026-11-04"
+  },
+  {
+    "symbol": "CRM",
+    "name": "Salesforce",
+    "underlying": "CRM",
+    "chain": "robinhood",
+    "address": "0xd95B44124e475743a7589e68F3D74008A5536D44",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "P",
+    "name": "Everpure",
+    "underlying": "P",
+    "chain": "robinhood",
+    "address": "0x1Cdad396DB64BDa184d5182A97Dd9B3C62100b7D",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "CIEN",
+    "name": "Ciena",
+    "underlying": "CIEN",
+    "chain": "robinhood",
+    "address": "0x44f6D488021f8233B9416294d1FE9b1fEe28382d",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "ON",
+    "name": "ON Semiconductor",
+    "underlying": "ON",
+    "chain": "robinhood",
+    "address": "0xbBD09F72b025360FeE5C928053Dca6248d35be54",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "APLD",
+    "name": "Applied Digital",
+    "underlying": "APLD",
+    "chain": "robinhood",
+    "address": "0xb8DBf92F9741c9ac1c32115E78581f23509916FD",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "AEHR",
+    "name": "Aehr",
+    "underlying": "AEHR",
+    "chain": "robinhood",
+    "address": "0x5F604fBA1162193A4388A5DFa56F556f3E133cC2",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "TEAM",
+    "name": "Atlassian Corporation",
+    "underlying": "TEAM",
+    "chain": "robinhood",
+    "address": "0x5B97476b922F3305131B8f0B9D333172E87f4aaE",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "QBTS",
+    "name": "D-Wave Quantum Inc. Common Stock",
+    "underlying": "QBTS",
+    "chain": "robinhood",
+    "address": "0xC583c60aeF9Dc401Da72cEC1B404743a93cea1Cc",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "SATS",
+    "name": "EchoStar",
+    "underlying": "SATS",
+    "chain": "robinhood",
+    "address": "0x95052ddcd5DC25641657424A8Cf04834997E1730",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "FIX",
+    "name": "Comfort Systems",
+    "underlying": "FIX",
+    "chain": "robinhood",
+    "address": "0x93Dbb1d2Dc5D63F4abACFF30485273f538Df68Ac",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "MTSI",
+    "name": "MACOM",
+    "underlying": "MTSI",
+    "chain": "robinhood",
+    "address": "0xC93f4d80e268AB922e871bd169156C3CC41894e6",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "SMCI",
+    "name": "Super Micro Computer",
+    "underlying": "SMCI",
+    "chain": "robinhood",
+    "address": "0xc01aA1fECeC0605b13bc84874ff7256C0f5F562a",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "V",
+    "name": "Visa",
+    "underlying": "V",
+    "chain": "robinhood",
+    "address": "0x9BFF87700337babF5099e99F322F888DafB1d551",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "DELL",
+    "name": "Dell",
+    "underlying": "DELL",
+    "chain": "robinhood",
+    "address": "0x941AE714EC6D8130c7B75d67160Ca08f1e7d11Dd",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "MXL",
+    "name": "MaxLinear",
+    "underlying": "MXL",
+    "chain": "robinhood",
+    "address": "0x48961813349333209994750ffA89b3c5C22eC969",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "RUN",
+    "name": "Sunrun",
+    "underlying": "RUN",
+    "chain": "robinhood",
+    "address": "0x756Bc80af765C82da966a788858d65aDF14f3793",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "WDAY",
+    "name": "Workday",
+    "underlying": "WDAY",
+    "chain": "robinhood",
+    "address": "0x82DA4646242e1D962e96e932269Dc644c94a9CaA",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "SPCX",
+    "name": "Space Exploration Technologies Corp. Class A Common Stock",
+    "underlying": "SPCX",
+    "chain": "robinhood",
+    "address": "0x4a0E65A3EcceC6dBe60AE065F2e7bb85Fae35eEa",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "GLXY",
+    "name": "Galaxy Digital Inc.",
+    "underlying": "GLXY",
+    "chain": "robinhood",
+    "address": "0x2D427692E928fa156ec22acfaBaFA0447C5805B7",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "CRWD",
+    "name": "CrowdStrike Holdings",
+    "underlying": "CRWD",
+    "chain": "robinhood",
+    "address": "0xea72Ecca2d0f6bFA1394DBBCff85b52CD4233931",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "AVGO",
+    "name": "Broadcom",
+    "underlying": "AVGO",
+    "chain": "robinhood",
+    "address": "0x156E175DD063a8cE274C50654eF40e0032b3fbcF",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "SPY",
+    "name": "SPDR S&P 500 ETF Trust",
+    "underlying": "SPY",
+    "chain": "robinhood",
+    "address": "0x117cc2133c37B721F49dE2A7a74833232B3B4C0C",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "CCL",
+    "name": "Carnival Corporation",
+    "underlying": "CCL",
+    "chain": "robinhood",
+    "address": "0x9651342CeA770aE9a2969Ba2A52611523146aef9",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "GLD",
+    "name": "SPDR Gold Trust",
+    "underlying": "GLD",
+    "chain": "robinhood",
+    "address": "0xC9a981FEE1F9DEc688bb123ccDeCc63D0deBFC4e",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "SNOW",
+    "name": "Snowflake",
+    "underlying": "SNOW",
+    "chain": "robinhood",
+    "address": "0xBa0CAB75495255d0cB58E22B648bFED4ECD1F47E",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "FICO",
+    "name": "Fair Isaac",
+    "underlying": "FICO",
+    "chain": "robinhood",
+    "address": "0xa48F22A46C0F1C46CA7D111CB6c137c271987180",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "PR",
+    "name": "Permian Resources",
+    "underlying": "PR",
+    "chain": "robinhood",
+    "address": "0x4189F0c66EBBB0bfeF1C31f763131361EF32f77C",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "QQQ",
+    "name": "Invesco QQQ",
+    "underlying": "QQQ",
+    "chain": "robinhood",
+    "address": "0xD5f3879160bc7c32ebb4dC785F8a4F505888de68",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "WYFI",
+    "name": "WhiteFiber, Inc.",
+    "underlying": "WYFI",
+    "chain": "robinhood",
+    "address": "0x9e7ABD3C9139D14E4c86DcE0e455AAB7A0C2FB3E",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "JPM",
+    "name": "JPMorgan Chase",
+    "underlying": "JPM",
+    "chain": "robinhood",
+    "address": "0x07c44dA0848960bFf894F17584dB8B2F60B2409E",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "NNE",
+    "name": "Nano Nuclear Energy",
+    "underlying": "NNE",
+    "chain": "robinhood",
+    "address": "0xBEF75684C43c4ea7BD18Dd532a2244674Ee8b926",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "GE",
+    "name": "General Electric",
+    "underlying": "GE",
+    "chain": "robinhood",
+    "address": "0x63b814DDBd6BF339f25Fed8c36158a008D5B373e",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "SNAP",
+    "name": "Snap",
+    "underlying": "SNAP",
+    "chain": "robinhood",
+    "address": "0xF6589F11Bc40b669e584073F428B05562F568733",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "SKHY",
+    "name": "SK hynix Inc. American Depositary Shares",
+    "underlying": "SKHY",
+    "chain": "robinhood",
+    "address": "0x84CAb63bc87912E71ad199ff14A0bA45de68FeF8",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "CBRS",
+    "name": "Cerebras Systems",
+    "underlying": "CBRS",
+    "chain": "robinhood",
+    "address": "0x5c90450Bbb4273D7b2f17CF6917AEB237A569679",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "FUTU",
+    "name": "Futu Holdings",
+    "underlying": "FUTU",
+    "chain": "robinhood",
+    "address": "0xeB30663bDFf0622Ef4e4E5cBb4E975F19f33f51D",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "TSM",
+    "name": "Taiwan Semiconductor Manufacturing",
+    "underlying": "TSM",
+    "chain": "robinhood",
+    "address": "0x58FfE4a942d3885bAa22D7520691F611EF09e7AA",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "NU",
+    "name": "Nu",
+    "underlying": "NU",
+    "chain": "robinhood",
+    "address": "0x408c14038a04f7bD235329E26d2bf569ee20e250",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "INTC",
+    "name": "Intel",
+    "underlying": "INTC",
+    "chain": "robinhood",
+    "address": "0xc72b96e0E48ecd4DC75E1e45396e26300BC39681",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "MSFT",
+    "name": "Microsoft",
+    "underlying": "MSFT",
+    "chain": "robinhood",
+    "address": "0xe93237C50D904957Cf27E7B1133b510C669c2e74",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "RCAT",
+    "name": "Red Cat",
+    "underlying": "RCAT",
+    "chain": "robinhood",
+    "address": "0xFDE6b5d9BB419B10C23268c74e369AbFF39C0460",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "RGTI",
+    "name": "Rigetti Computing",
+    "underlying": "RGTI",
+    "chain": "robinhood",
+    "address": "0x284358abc07F9359f19f4b5b4aC91901Be2597Ba",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "TTWO",
+    "name": "Take-Two Interactive Software",
+    "underlying": "TTWO",
+    "chain": "robinhood",
+    "address": "0x5e81213613b6B86EaB4c6c50d718d34359459786",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "META",
+    "name": "Meta Platforms",
+    "underlying": "META",
+    "chain": "robinhood",
+    "address": "0xc0D6457C16Cc70d6790Dd43521C899C87ce02f35",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "VICR",
+    "name": "Vicor",
+    "underlying": "VICR",
+    "chain": "robinhood",
+    "address": "0x6006ed4B2F94110851ff7509D97D034f0EeD9226",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "TSEM",
+    "name": "Tower Semiconductor",
+    "underlying": "TSEM",
+    "chain": "robinhood",
+    "address": "0x89776d4Cd68193597A2fC132cfaC1fDe36CCeA8a",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "RDDT",
+    "name": "Reddit",
+    "underlying": "RDDT",
+    "chain": "robinhood",
+    "address": "0x05b37Fb53A299a1b874A619e1c4C404D52C36F4C",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "GLW",
+    "name": "Corning",
+    "underlying": "GLW",
+    "chain": "robinhood",
+    "address": "0x7c04E6A3368F2A1DE3874f0e80d2e0A1a9915da6",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "UPS",
+    "name": "UPS",
+    "underlying": "UPS",
+    "chain": "robinhood",
+    "address": "0xf23250dac154D05Bb671CB0d0eBEf3c635c79CE2",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "PANW",
+    "name": "Palo Alto Networks",
+    "underlying": "PANW",
+    "chain": "robinhood",
+    "address": "0xB039597eD45CBa7B6E2fb9E8BE51802969CEe5Be",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "LHX",
+    "name": "L3Harris",
+    "underlying": "LHX",
+    "chain": "robinhood",
+    "address": "0x48d60243c66437c6ac3c2495Be94747aEd5Dfe25",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "MCD",
+    "name": "McDonald's",
+    "underlying": "MCD",
+    "chain": "robinhood",
+    "address": "0x2fdaa4604F10F4AE7f66fa48A174bCd25b1ece20",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "FLY",
+    "name": "Firefly Aerospace Inc.",
+    "underlying": "FLY",
+    "chain": "robinhood",
+    "address": "0x03BC731Ffb162cdd7B98D3C6542bFC291126075d",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "SNDK",
+    "name": "Sandisk Corporation",
+    "underlying": "SNDK",
+    "chain": "robinhood",
+    "address": "0xB90A19fF0Af67f7779afF50A882A9CfF42446400",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "BA",
+    "name": "Boeing",
+    "underlying": "BA",
+    "chain": "robinhood",
+    "address": "0x4D21483a44Bf67a86b77E3dA301411880797D452",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "INTU",
+    "name": "Intuit",
+    "underlying": "INTU",
+    "chain": "robinhood",
+    "address": "0x56d23beE5f41A7120170b0c603Dae30128e460e9",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "ELF",
+    "name": "e.l.f. Beauty",
+    "underlying": "ELF",
+    "chain": "robinhood",
+    "address": "0x39EC44Bee4F6A116c6F9B8De566848a985C53C60",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "GDX",
+    "name": "VanEck Gold Miners ETF",
+    "underlying": "GDX",
+    "chain": "robinhood",
+    "address": "0xBDFa7A06458Aa26b8E736E0fC87aD37C3BB8Ac2e",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "AMZN",
+    "name": "Amazon",
+    "underlying": "AMZN",
+    "chain": "robinhood",
+    "address": "0x12f190a9F9d7D37a250758b26824B97CE941bF54",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "NFLX",
+    "name": "Netflix",
+    "underlying": "NFLX",
+    "chain": "robinhood",
+    "address": "0xE0444EF8BF4eD74f74FD73686e2ddF4C1c5591E8",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "CRCL",
+    "name": "Circle Internet Group",
+    "underlying": "CRCL",
+    "chain": "robinhood",
+    "address": "0xdF0992E440dD0be65BD8439b609d6D4366bf1CB5",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "PYPL",
+    "name": "PayPal",
+    "underlying": "PYPL",
+    "chain": "robinhood",
+    "address": "0xa45aBDc77918F7B9199b022eEe400C0BC5712BD2",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "USAR",
+    "name": "USA Rare Earth",
+    "underlying": "USAR",
+    "chain": "robinhood",
+    "address": "0xd917B029C761D264c6A312BBbcDA868658eF86a6",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "VST",
+    "name": "Vistra",
+    "underlying": "VST",
+    "chain": "robinhood",
+    "address": "0x561e2a49212b7cCF47f2744Ccb83e200722fADBc",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "CSCO",
+    "name": "Cisco Systems",
+    "underlying": "CSCO",
+    "chain": "robinhood",
+    "address": "0xF543967EEBB6f1917992eF0E68De63ab07a5a0dA",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "FISV",
+    "name": "Fiserv",
+    "underlying": "FISV",
+    "chain": "robinhood",
+    "address": "0x9ECe29A4A2397C0a35fb5fA8EE2b9509130a98cc",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "GOOGL",
+    "name": "Alphabet Class A",
+    "underlying": "GOOGL",
+    "chain": "robinhood",
+    "address": "0x2e0847E8910a9732eB3fb1bb4b70a580ADAD4FE3",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "BB",
+    "name": "Blackberry",
+    "underlying": "BB",
+    "chain": "robinhood",
+    "address": "0x48E39E56aCdbA37b09020C0b734A613C9a2f100A",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "CVNA",
+    "name": "Carvana",
+    "underlying": "CVNA",
+    "chain": "robinhood",
+    "address": "0xa4f319104089FE321dc8093C6E707d4fE190A988",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "AXTI",
+    "name": "AXT",
+    "underlying": "AXTI",
+    "chain": "robinhood",
+    "address": "0x141eEa040c2250eEc0314e336975e81f85f6585e",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "MOD",
+    "name": "Modine",
+    "underlying": "MOD",
+    "chain": "robinhood",
+    "address": "0xc6Cbad1016b38B797610c25E1dc7D95988B1f362",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "LULU",
+    "name": "Lululemon",
+    "underlying": "LULU",
+    "chain": "robinhood",
+    "address": "0x4e62068525Ab11FE768e29dfD00ef909B9803016",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "LMT",
+    "name": "Lockheed",
+    "underlying": "LMT",
+    "chain": "robinhood",
+    "address": "0x329fcACEb9AD6F9580DD5F643fed0646900D043c",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "INFQ",
+    "name": "Infleqtion",
+    "underlying": "INFQ",
+    "chain": "robinhood",
+    "address": "0xB853bC83a753342a4f8320ea680b4B1E84118D21",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "SGOV",
+    "name": "iShares 0-3 Month Treasury Bond",
+    "underlying": "SGOV",
+    "chain": "robinhood",
+    "address": "0x92FD66527192E3e61d4DDd13322Aa222DE86F9B5",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "OUST",
+    "name": "Ouster",
+    "underlying": "OUST",
+    "chain": "robinhood",
+    "address": "0x40E7a279850e443f582059ae5dC1c3b6563E6395",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "IREN",
+    "name": "IREN Limited",
+    "underlying": "IREN",
+    "chain": "robinhood",
+    "address": "0xF0AB0c93bE6F41369d302e55db1A96b3c430212D",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "MRNA",
+    "name": "Moderna",
+    "underlying": "MRNA",
+    "chain": "robinhood",
+    "address": "0x43B07D15cE533bEc5476d70C22a78a1B2B662155",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "LRCX",
+    "name": "Lam Research Corp",
+    "underlying": "LRCX",
+    "chain": "robinhood",
+    "address": "0x57b0030166DB0C31690d1A5aA167e2e26e2C29a4",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "BND",
+    "name": "Vanguard Total Bond Market ETF",
+    "underlying": "BND",
+    "chain": "robinhood",
+    "address": "0x2F62fC9fAbb470C690f141c28340eD832bB27020",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "CEG",
+    "name": "Constellation Energy",
+    "underlying": "CEG",
+    "chain": "robinhood",
+    "address": "0xaE517A2903E68bd929Dfd15be875F8369D53e94a",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "ALAB",
+    "name": "Astera Labs, Inc.",
+    "underlying": "ALAB",
+    "chain": "robinhood",
+    "address": "0x748c32c3ca24eDf31ea597Db1F3d330a7a6DA3Dc",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "TEM",
+    "name": "Tempus AI",
+    "underlying": "TEM",
+    "chain": "robinhood",
+    "address": "0xB1CC0EC7Db69Cf43539119814df40071b9d61793",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "BULL",
+    "name": "Webull",
+    "underlying": "BULL",
+    "chain": "robinhood",
+    "address": "0xceF9027c7d6985b85f0BA431125073529A947A68",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "UNH",
+    "name": "UnitedHealth",
+    "underlying": "UNH",
+    "chain": "robinhood",
+    "address": "0xcF364ea52787e289De6F32077834056E3E70D6A8",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "CLOV",
+    "name": "Clover Health Investments",
+    "underlying": "CLOV",
+    "chain": "robinhood",
+    "address": "0x62200915e7DEab1eC7f79fb246daDbB80eACdDd0",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "BABA",
+    "name": "Alibaba",
+    "underlying": "BABA",
+    "chain": "robinhood",
+    "address": "0xad25Ac6C84D497db898fa1E8387bf6Af3532a1c4",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "SIMO",
+    "name": "Silicon Motion",
+    "underlying": "SIMO",
+    "chain": "robinhood",
+    "address": "0x77E655E37F4d913fB9540e0d541D824171a60e81",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "WDC",
+    "name": "Western Digital",
+    "underlying": "WDC",
+    "chain": "robinhood",
+    "address": "0xF52597345A8Edf418bc4071b4a35112472277D3e",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "CLSK",
+    "name": "CleanSpark",
+    "underlying": "CLSK",
+    "chain": "robinhood",
+    "address": "0xcBB95BBF36099d34dA091dc6Fa6F49EfA257Cee3",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "PLTR",
+    "name": "Palantir Technologies",
+    "underlying": "PLTR",
+    "chain": "robinhood",
+    "address": "0x894E1EC2D74FFE5AEF8Dc8A9e84686acCB964F2A",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "MU",
+    "name": "Micron Technology",
+    "underlying": "MU",
+    "chain": "robinhood",
+    "address": "0xfF080c8ce2E5feadaCa0Da81314Ae59D232d4afD",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "ASTS",
+    "name": "AST SpaceMobile",
+    "underlying": "ASTS",
+    "chain": "robinhood",
+    "address": "0x1AF6446f07eb1d97c546AFC8c9544cBDF3AD5137",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "POWL",
+    "name": "Powell Industries",
+    "underlying": "POWL",
+    "chain": "robinhood",
+    "address": "0x237c16D66590F67B886d978ACD362EAeaD8B18c7",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "VTI",
+    "name": "Vanguard Morningstar Total Stock Market ETF",
+    "underlying": "VTI",
+    "chain": "robinhood",
+    "address": "0x0594134DF3f171a354D9C85eBD65b7A6148F6D09",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "RKLB",
+    "name": "Rocket Lab Corporation",
+    "underlying": "RKLB",
+    "chain": "robinhood",
+    "address": "0x3b14C39E89D60D627b42a1A4CA45b5bb45Fc12e2",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
+  },
+  {
+    "symbol": "TER",
+    "name": "Teradyne",
+    "underlying": "TER",
+    "chain": "robinhood",
+    "address": "0x2778C5024D5cA2CdB0f8eAD671ffc69963AdCD9C",
+    "issuer": "robinhood",
+    "addressSource": {
+      "label": "Robinhood Stock Token API (/rhj/assets)",
+      "url": "https://api.robinhood.com/rhj/assets"
+    },
+    "lastChecked": "2026-11-07"
   }
 ]

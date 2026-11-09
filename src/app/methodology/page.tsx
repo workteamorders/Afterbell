@@ -181,6 +181,37 @@ const sections: DocSection[] = [
     ),
   },
   {
+    id: "robinhood",
+    title: "Robinhood Chain swaps",
+    body: (
+      <>
+        <p>
+          Robinhood Stock Tokens trade through Uniswap v4 on Robinhood Chain (chain ID 4663). The Ethereum rules above apply with these differences:
+        </p>
+        <ul>
+          <li>
+            <strong>Route</strong>: a single Uniswap v4 pool. Afterbell looks for pools that pair the token with USDG, have no hook, and use a standard fee and tick spacing (0.01%, 0.05%, 0.3%, 1%). It checks that a pool holds liquidity, asks Uniswap&apos;s v4 quoter, and uses the pool that pays the most. Pools paired with ETH or another asset, and pools with hooks, are not found. The swap is sent through Uniswap&apos;s Universal Router.
+          </li>
+          <li>
+            <strong>Dollar value</strong>: USDG is treated as worth $1 when the depth meter sizes a $100, $1,000, and $10,000 order. USDG is a stablecoin and can trade away from $1. Its decimals are read from the contract and checked against the expected value before any quote is used.
+          </li>
+          <li>
+            <strong>Approvals</strong>: Uniswap v4 pulls your tokens through Permit2. You may see up to three wallet requests: let Permit2 move the exact amount, let the Uniswap router use exactly that amount for a short time, then the swap. Requests that are already granted are skipped.
+          </li>
+          <li>
+            <strong>Corporate actions</strong>: Stock Tokens keep your balance fixed. A dividend or split changes an onchain multiplier (uiMultiplier, ERC-8056) that sets how many shares a token represents. Afterbell shows token balances as they are on-chain and does not apply the multiplier.
+          </li>
+          <li>
+            <strong>Network fee</strong>: paid in ETH to the network that processes the transaction and estimated from the simulation.
+          </li>
+          <li>
+            <strong>Sources</strong>: token addresses come from Robinhood&apos;s Stock Token API, and the Uniswap contract addresses from Uniswap&apos;s v4 deployment page. Each token entry carries its source and check date.
+          </li>
+        </ul>
+      </>
+    ),
+  },
+  {
     id: "safety",
     title: "Checks before you sign",
     body: (

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(CONFIG.siteUrl),
   title: { default: "Afterbell", template: "%s · Afterbell" },
   description:
-    "Buy, sell, and understand tokenized US stocks on Solana and Ethereum. See what you hold, how deep the liquidity is, whether the US market is open, and the full cost before you sign.",
+    "Buy, sell, and understand tokenized US stocks on Solana and Ethereum, and Stock Tokens on Robinhood Chain. See what you hold, how deep the liquidity is, whether the US market is open, and the full cost before you sign.",
   applicationName: "Afterbell",
   openGraph: { siteName: "Afterbell", type: "website", images: [{ url: "/og.png", width: 1200, height: 630, alt: "Afterbell: tokenized US stocks on Solana" }] },
   twitter: { card: "summary_large_image", images: ["/og.png"] },

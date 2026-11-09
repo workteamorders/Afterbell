@@ -16,11 +16,12 @@ import { Panel } from "@/components/ui/Panel";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { ErrorState, Notice } from "@/components/ui/StateBlock";
 import { formatNumber, parseDecimalToRaw, rawToDecimalString } from "@/lib/amounts";
-import type { EvmChain } from "@/lib/evm/chains";
+import { venueName, type EvmChain } from "@/lib/evm/chains";
 import { quoteExactIn, type EvmQuote } from "@/lib/evm/quote";
 import { ethCall, ethEstimateGas, ethGasPrice, ethGetBalance, ethGetReceipt, type EvmReceipt } from "@/lib/evm/rpc";
-import { buildApprove, buildSwap, explainEvmError, formatWei, minAmountOut, receiptSucceeded, receivedFromReceipt, type Call } from "@/lib/evm/swap";
-import { readAllowance, readDecimals, readErc20Balance } from "@/lib/evm/tokens";
+import { buildSwap, erc20Spender, explainEvmError, formatWei, minAmountOut, planApprovals, receiptSucceeded, receivedFromReceipt, type Call } from "@/lib/evm/swap";
+import { readAllowance, readDecimals, readErc20Balance, readPermit2Allowance, verifyQuoteDecimals } from "@/lib/evm/tokens";
+import { poolLabel } from "@/lib/evm/v4";
 import { isUserRejection } from "@/lib/evm/wallet";
 import { canTrade } from "@/lib/geo";
 import { addHistory } from "@/lib/history";
@@ -47,12 +48,12 @@ interface Pair {
 
 function pairFor(chain: EvmChain, token: EvmToken, tokenDecimals: number, side: Side): Pair {
   return side === "buy"
-    ? { side, inAddr: chain.usdc.address, inDecimals: chain.usdc.decimals, inSymbol: "USDC", outAddr: token.address, outDecimals: tokenDecimals, outSymbol: token.symbol }
-    : { side, inAddr: token.address, inDecimals: tokenDecimals, inSymbol: token.symbol, outAddr: chain.usdc.address, outDecimals: chain.usdc.decimals, outSymbol: "USDC" };
+    ? { side, inAddr: chain.usd.address, inDecimals: chain.usd.decimals, inSymbol: chain.usd.symbol, outAddr: token.address, outDecimals: tokenDecimals, outSymbol: token.symbol }
+    : { side, inAddr: token.address, inDecimals: tokenDecimals, inSymbol: token.symbol, outAddr: chain.usd.address, outDecimals: chain.usd.decimals, outSymbol: chain.usd.symbol };
 }
 
-function tierLabel(fee: number): string {
-  return `${(fee / 10_000).toFixed(2)}% fee tier`;
+function routeLabel(chain: EvmChain, q: EvmQuote): string {
+  return q.pool ? `${venueName(chain)}, ${poolLabel(q.pool)}` : `${venueName(chain)}, ${(q.fee / 10_000).toFixed(2)}% fee tier`;
 }
 
 export function EvmSwapPanel({ chain, token, issuer }: { chain: EvmChain; token: EvmToken; issuer: Issuer }) {
@@ -81,8 +82,8 @@ export function EvmSwapPanel({ chain, token, issuer }: { chain: EvmChain; token:
   useEffect(() => {
     let live = true;
     setDecimalsError(false);
-    readDecimals(chain, token.address)
-      .then((d) => live && setDecimals(d))
+    Promise.all([verifyQuoteDecimals(chain), readDecimals(chain, token.address)])
+      .then(([, d]) => live && setDecimals(d))
       .catch(() => live && setDecimalsError(true));
     return () => {
       live = false;
@@ -96,7 +97,7 @@ export function EvmSwapPanel({ chain, token, issuer }: { chain: EvmChain; token:
   const loadBal = useCallback(() => {
     if (!address) return;
     setBalError(false);
-    Promise.all([readErc20Balance(chain, chain.usdc.address, address), readErc20Balance(chain, token.address, address), ethGetBalance(chain, address)])
+    Promise.all([readErc20Balance(chain, chain.usd.address, address), readErc20Balance(chain, token.address, address), ethGetBalance(chain, address)])
       .then(([usdc, tok, eth]) => setBal({ usdc, token: tok, eth }))
       .catch(() => setBalError(true));
   }, [address, chain, token.address]);
@@ -147,7 +148,7 @@ export function EvmSwapPanel({ chain, token, issuer }: { chain: EvmChain; token:
       <Panel as="section" aria-label="Swap" aria-busy="true" className={`${styles.panel} ${styles.loadingPanel}`}>
         <Skeleton shape="title" />
         {issuer.restrictsUsPersons ? (
-          <Notice tone="warning" icon="alert" title={`Check ${issuer.name}'s regional limits first`}>
+          <Notice tone="warning" icon="alert" title={`Check regional limits for ${issuer.name} first`}>
             <RestrictionText issuer={issuer} />
           </Notice>
         ) : null}
@@ -196,7 +197,7 @@ export function EvmSwapPanel({ chain, token, issuer }: { chain: EvmChain; token:
       </div>
 
       {issuer.restrictsUsPersons ? (
-        <Notice tone="warning" icon="alert" title={`Check ${issuer.name}'s regional limits first`}>
+        <Notice tone="warning" icon="alert" title={`Check regional limits for ${issuer.name} first`}>
           <RestrictionText issuer={issuer} />
         </Notice>
       ) : null}
@@ -254,7 +255,7 @@ export function EvmSwapPanel({ chain, token, issuer }: { chain: EvmChain; token:
             {formatNumber(Number(indicative.out) / 10 ** pair.outDecimals, pair.outDecimals > 6 ? 6 : 4)} {pair.outSymbol}
           </p>
         ) : indicative.state === "none" ? (
-          <p className="type-small">No Uniswap v3 pool can fill this amount. Try a smaller amount.</p>
+          <p className="type-small">No {venueName(chain)} pool can fill this amount. Try a smaller amount.</p>
         ) : indicative.state === "error" ? (
           <p className="type-small">{indicative.message}</p>
         ) : (
@@ -289,7 +290,7 @@ export function EvmSwapPanel({ chain, token, issuer }: { chain: EvmChain; token:
             <EvmWalletPicker open={picker} onClose={() => setPicker(false)} />
           </>
         ) : wrongChain ? (
-          <Button variant="primary" size="lg" onClick={() => void wallet.ensureChain(chain.chainId)}>
+          <Button variant="primary" size="lg" onClick={() => void wallet.ensureChain(chain)}>
             Switch wallet to {chain.name}
           </Button>
         ) : (
@@ -298,7 +299,7 @@ export function EvmSwapPanel({ chain, token, issuer }: { chain: EvmChain; token:
           </Button>
         )}
         <p className="type-note">
-          You see the full cost before you sign. Swaps go through Uniswap v3 on {chain.name}. <Link href="/methodology#ethereum">How Ethereum swaps work</Link>.
+          You see the full cost before you sign. Swaps go through {venueName(chain)} on {chain.name}. <Link href={`/methodology#${chain.id}`}>How {chain.name} swaps work</Link>.
         </p>
       </div>
 
@@ -348,8 +349,8 @@ interface Prepared {
 type Step =
   | { k: "building" }
   | { k: "problem"; err: FriendlyError }
-  | { k: "approve"; quote: EvmQuote; gas: bigint | null; gasPrice: bigint | null }
-  | { k: "approving"; hash: string | null }
+  | { k: "approve"; quote: EvmQuote; calls: Call[]; gas: bigint | null; gasPrice: bigint | null }
+  | { k: "approving"; hash: string | null; index: number; total: number }
   | { k: "simulating" }
   | { k: "ready"; p: Prepared }
   | { k: "signing"; p: Prepared }
@@ -409,7 +410,7 @@ function EvmReviewDialog({
     if (e instanceof RpcError) {
       const err =
         e.kind === "rpc"
-          ? explainEvmError(e.message, { nativeSymbol: chain.nativeSymbol })
+          ? explainEvmError(e.message, { nativeSymbol: chain.nativeSymbol, chainName: chain.name })
           : { what: e.kind === "rate-limited" ? "Too many requests were made in a short time." : e.message, safety: SAFE_NOT_SENT, next: "Try again in a moment." };
       return { k: "failed", err } as const;
     }
@@ -424,18 +425,22 @@ function EvmReviewDialog({
       const quote = await quoteExactIn(chain, pair.inAddr, pair.outAddr, amountRaw);
       if (id !== run.current) return;
       if (!quote) {
-        return setStep({ k: "problem", err: { what: "No Uniswap v3 pool can fill this amount right now.", safety: SAFE_NOT_SENT, next: "Try a smaller amount. The pool for this token may be small." } });
+        return setStep({ k: "problem", err: { what: `No ${venueName(chain)} pool can fill this amount right now.`, safety: SAFE_NOT_SENT, next: "Try a smaller amount. The pool for this token may be small." } });
       }
-      const allowance = await readAllowance(chain, pair.inAddr, taker, chain.uniswapV3.swapRouter02);
+      const [erc20Allowance, permit2] = await Promise.all([
+        readAllowance(chain, pair.inAddr, taker, erc20Spender(chain)),
+        chain.venue === "uniswap-v4" ? readPermit2Allowance(chain, pair.inAddr, taker, chain.uniswapV4.universalRouter) : Promise.resolve(undefined),
+      ]);
       if (id !== run.current) return;
-      if (allowance < amountRaw) {
-        const approve = buildApprove(chain, pair.inAddr, amountRaw);
+      const calls = planApprovals(chain, { token: pair.inAddr, amount: amountRaw, erc20Allowance, permit2, nowSec: Math.floor(Date.now() / 1000), validForSec: DEADLINE_SECS });
+      const first = calls[0];
+      if (first) {
         const [gas, gasPrice] = await Promise.all([
-          ethEstimateGas(chain, { from: taker, to: approve.to, data: approve.data }).catch(() => null),
+          ethEstimateGas(chain, { from: taker, to: first.to, data: first.data }).catch(() => null),
           ethGasPrice(chain).catch(() => null),
         ]);
         if (id !== run.current) return;
-        return setStep({ k: "approve", quote, gas, gasPrice });
+        return setStep({ k: "approve", quote, calls, gas, gasPrice });
       }
       await simulate(id, quote);
     } catch (e) {
@@ -451,6 +456,7 @@ function EvmReviewDialog({
       tokenIn: pair.inAddr,
       tokenOut: pair.outAddr,
       fee: quote.fee,
+      pool: quote.pool,
       recipient: taker,
       amountIn: amountRaw,
       amountOutMinimum: minOut,
@@ -464,7 +470,7 @@ function EvmReviewDialog({
       setStep({ k: "ready", p: { quote, minOut, call, gas, gasPrice, builtAt: Date.now() } });
     } catch (e) {
       if (id !== run.current) return;
-      setStep(e instanceof RpcError && e.kind === "rpc" ? { k: "problem", err: explainEvmError(e.message, { nativeSymbol: chain.nativeSymbol }) } : fail(e, "The pre-check could not run."));
+      setStep(e instanceof RpcError && e.kind === "rpc" ? { k: "problem", err: explainEvmError(e.message, { nativeSymbol: chain.nativeSymbol, chainName: chain.name }) } : fail(e, "The pre-check could not run."));
     }
   };
 
@@ -476,22 +482,23 @@ function EvmReviewDialog({
   }, [build]);
 
   const sendAndWait = async (call: Call) => {
-    if (!(await wallet.ensureChain(chain.chainId))) throw Object.assign(new Error("Wrong network"), { wrongChain: true });
+    if (!(await wallet.ensureChain(chain))) throw Object.assign(new Error("Wrong network"), { wrongChain: true });
     return wallet.send({ to: call.to, data: call.data });
   };
 
-  const doApprove = async (quote: EvmQuote) => {
-    setStep({ k: "approving", hash: null });
+  const doApprove = async (quote: EvmQuote, calls: Call[]) => {
     try {
-      const approve = buildApprove(chain, pair.inAddr, amountRaw);
-      // Simulasi persetujuan sebelum diminta tanda tangan.
-      await ethCall(chain, { from: taker, to: approve.to, data: approve.data });
-      const hash = await sendAndWait(approve);
-      setStep({ k: "approving", hash });
-      const receipt = await waitForReceipt(chain, hash, cancel.current);
-      if (cancel.current.cancelled) return;
-      if (!receipt || !receiptSucceeded(receipt)) {
-        return setStep({ k: "failed", hash, err: { what: receipt ? "The approval transaction failed." : "The approval has not confirmed yet.", safety: "Only the approval is affected. No swap was sent and no tokens moved.", next: "Check the explorer link, then review again." } });
+      // Setiap persetujuan disimulasikan sebelum diminta tanda tangan, lalu ditunggu sampai terkonfirmasi sebelum yang berikutnya.
+      for (const [index, approve] of calls.entries()) {
+        setStep({ k: "approving", hash: null, index, total: calls.length });
+        await ethCall(chain, { from: taker, to: approve.to, data: approve.data });
+        const hash = await sendAndWait(approve);
+        setStep({ k: "approving", hash, index, total: calls.length });
+        const receipt = await waitForReceipt(chain, hash, cancel.current);
+        if (cancel.current.cancelled) return;
+        if (!receipt || !receiptSucceeded(receipt)) {
+          return setStep({ k: "failed", hash, err: { what: receipt ? "The approval transaction failed." : "The approval has not confirmed yet.", safety: "Only the approval is affected. No swap was sent and no tokens moved.", next: "Check the explorer link, then review again." } });
+        }
       }
       const id = ++run.current;
       await simulate(id, quote);
@@ -531,12 +538,12 @@ function EvmReviewDialog({
       });
     }
     if (!receiptSucceeded(receipt)) {
-      return setStep({ k: "failed", hash, err: { what: "The swap transaction failed on Ethereum.", safety: "A failed swap does not move your tokens. You still paid the network fee.", next: "Review the swap again for a fresh quote." } });
+      return setStep({ k: "failed", hash, err: { what: `The swap transaction failed on ${chain.name}.`, safety: "A failed swap does not move your tokens. You still paid the network fee.", next: "Review the swap again for a fresh quote." } });
     }
     const received = receivedFromReceipt(receipt, pair.outAddr, taker);
     addHistory({
       signature: hash,
-      network: "ethereum",
+      network: chain.id,
       at: Date.now(),
       side: pair.side,
       symbol: token.symbol,
@@ -558,7 +565,7 @@ function EvmReviewDialog({
       open
       onClose={() => (busy ? undefined : onClose(done))}
       title={done ? "Swap confirmed" : pair.side === "buy" ? `Review: buy ${token.symbol}` : `Review: sell ${token.symbol}`}
-      description={done ? "Your wallet sent it and Ethereum confirmed it." : "Check the full cost. Nothing is sent until you confirm in your wallet."}
+      description={done ? `Your wallet sent it and ${chain.name} confirmed it.` : "Check the full cost. Nothing is sent until you confirm in your wallet."}
       actions={
         step.k === "ready" ? (
           <>
@@ -574,7 +581,7 @@ function EvmReviewDialog({
             <Button variant="ghost" onClick={() => onClose(false)}>
               Cancel
             </Button>
-            <Button variant="primary" icon="wallet" onClick={() => void doApprove(step.quote)}>
+            <Button variant="primary" icon="wallet" onClick={() => void doApprove(step.quote, step.calls)}>
               Approve {pair.inSymbol} in wallet
             </Button>
           </>
@@ -625,18 +632,20 @@ function EvmReviewDialog({
 
       {step.k === "approve" || step.k === "approving" ? (
         <div className={styles.summary}>
-          <Notice tone="info" icon="info" title="Step 1 of 2: approve the exact amount">
-            Uniswap needs your permission to move {rawToDecimalString(amountRaw, pair.inDecimals, 6)} {pair.inSymbol} from your wallet. Afterbell asks for exactly this amount, not unlimited access. You then sign the swap as a second transaction.
+          <Notice tone="info" icon="info" title={`Step ${step.k === "approving" ? step.index + 1 : 1} of ${(step.k === "approving" ? step.total : step.calls.length) + 1}: approve the exact amount`}>
+            {chain.venue === "uniswap-v4"
+              ? `Uniswap v4 pulls your ${pair.inSymbol} through Permit2. Your wallet first lets Permit2 move ${rawToDecimalString(amountRaw, pair.inDecimals, 6)} ${pair.inSymbol}, then lets the Uniswap router use exactly that amount for a short time. Afterbell asks for exactly this amount, not unlimited access. You then sign the swap as the last transaction.`
+              : `Uniswap needs your permission to move ${rawToDecimalString(amountRaw, pair.inDecimals, 6)} ${pair.inSymbol} from your wallet. Afterbell asks for exactly this amount, not unlimited access. You then sign the swap as a second transaction.`}
           </Notice>
           {step.k === "approve" && step.gas !== null && step.gasPrice !== null ? (
             <dl className={styles.rows}>
-              <Row label="Approval network fee" value={`about ${formatWei(step.gas * step.gasPrice)} ${chain.nativeSymbol}`} hint="Paid in ETH to Ethereum validators. It is not paid to Afterbell or Uniswap." />
+              <Row label="Approval network fee" value={`about ${formatWei(step.gas * step.gasPrice)} ${chain.nativeSymbol}`} hint={`Paid in ${chain.nativeSymbol} to the network that processes the transaction. It is not paid to Afterbell or Uniswap.`} />
             </dl>
           ) : null}
           {lowEth ? <p className="type-small">Your wallet shows no {chain.nativeSymbol}. You need some to pay network fees.</p> : null}
           {step.k === "approving" ? (
             <p role="status" className="type-small">
-              {step.hash ? "Waiting for Ethereum to confirm the approval…" : "Waiting for your wallet. Approve the request there."}
+              {step.hash ? `Waiting for ${chain.name} to confirm the approval…` : "Waiting for your wallet. Approve the request there."}
             </p>
           ) : null}
         </div>
@@ -652,7 +661,7 @@ function EvmReviewDialog({
           ) : null}
           {step.k === "pending" ? (
             <p role="status" className="type-small">
-              Sent. Waiting for Ethereum to confirm…{" "}
+              Sent. Waiting for {chain.name} to confirm…{" "}
               <a href={explorerUrl(chain.explorerTx, step.hash)} target="_blank" rel="noopener noreferrer">
                 Watch it in the explorer
               </a>
@@ -665,7 +674,7 @@ function EvmReviewDialog({
         <div className={styles.receipt}>
           <div className={styles.celebrate}>
             <Ripple playKey={celebrate} />
-            <p className="type-h3">Confirmed on Ethereum</p>
+            <p className="type-h3">Confirmed on {chain.name}</p>
           </div>
           <dl className={styles.rows}>
             <Row label="You paid" value={`${rawToDecimalString(amountRaw, pair.inDecimals, 6)} ${pair.inSymbol}`} />
@@ -694,11 +703,11 @@ function EvmSummary({ chain, pair, issuer, p, slippageBps, amountRaw }: { chain:
         <Row label="You pay" value={`${formatNumber(inUi, 6)} ${pair.inSymbol}`} strong />
         <Row label="You receive about" value={`${formatNumber(outUi, 6)} ${pair.outSymbol}`} strong />
         <Row label="You receive at least" value={`${formatNumber(minUi, 6)} ${pair.outSymbol}`} hint={`If the price moves more than your ${(slippageBps / 100).toFixed(2)}% tolerance, the swap is cancelled instead of filling at a worse price.`} />
-        <Row label="Route" value={`Uniswap v3, ${tierLabel(p.quote.fee)}`} hint="A single pool. Afterbell tries the standard fee tiers and picks the one that pays the most." />
+        <Row label="Route" value={routeLabel(chain, p.quote)} hint="A single pool. Afterbell tries the standard pools and picks the one that pays the most." />
         <Row label="Price impact" value="Not available" hint="Uniswap's quoter does not report a market reference price. The depth meter on this page shows how the price moves with order size." />
         <Row label="Slippage tolerance" value={`${(slippageBps / 100).toFixed(2)}%`} />
-        <Row label="Afterbell fee" value="0 bps" hint="Afterbell does not charge a fee on Ethereum swaps." />
-        <Row label="Network fee" value={`about ${formatWei(fee)} ${chain.nativeSymbol}`} hint="Estimated from the simulation and the current gas price. Paid in ETH to Ethereum validators, not to Afterbell or Uniswap. The final fee can differ." />
+        <Row label="Afterbell fee" value="0 bps" hint={`Afterbell does not charge a fee on ${chain.name} swaps.`} />
+        <Row label="Network fee" value={`about ${formatWei(fee)} ${chain.nativeSymbol}`} hint={`Estimated from the simulation and the current gas price. Paid in ${chain.nativeSymbol} to the network that processes the transaction, not to Afterbell or Uniswap. The final fee can differ.`} />
       </dl>
       <p className="type-small">The pre-check (simulation) passed. That does not guarantee the outcome: prices can still move before the swap lands.</p>
       {issuer.restrictsUsPersons ? (

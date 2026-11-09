@@ -8,7 +8,7 @@ const httpsUrl = z.url({ protocol: /^https$/ });
 
 const source = z.object({ label: z.string().min(1), url: httpsUrl }).strict();
 
-export const STRUCTURES = ["debt-tracker-certificate", "structured-note", "spv-claim", "synthetic-spv"] as const;
+export const STRUCTURES = ["debt-tracker-certificate", "structured-note", "spv-claim", "synthetic-spv", "debt-security"] as const;
 
 /** Entri tanpa sumber dan tanggal periksa tidak boleh masuk. */
 export const issuerSchema = z

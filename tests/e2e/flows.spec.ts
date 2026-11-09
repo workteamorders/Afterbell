@@ -14,7 +14,7 @@ test.describe("browsing", () => {
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Tokenized US stocks");
     await page.getByRole("link", { name: "Explore tokens" }).click();
-    await expect(page.getByRole("heading", { level: 1, name: /Tokenized stocks on Solana/ })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: /Tokenized stocks and Stock Tokens/ })).toBeVisible();
     await expect(page.getByText("Deep").first()).toBeVisible();
     await page.getByRole("link", { name: /TSLAx/ }).first().click();
     await expect(page.getByRole("heading", { level: 1 })).toContainText("TSLAx");

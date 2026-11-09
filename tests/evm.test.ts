@@ -16,7 +16,7 @@ const TAKER = "0x1111111111111111111111111111111111111111";
 describe("EVM registry", () => {
   it("every address is a valid EIP-55 checksummed address", () => {
     for (const t of EVM_TOKENS) expect(getAddress(t.address), t.symbol).toBe(t.address);
-    for (const a of [chain.usdc.address, chain.uniswapV3.quoterV2, chain.uniswapV3.swapRouter02, chain.uniswapV3.factory]) expect(getAddress(a)).toBe(a);
+    for (const a of [chain.usd.address, chain.uniswapV3.quoterV2, chain.uniswapV3.swapRouter02, chain.uniswapV3.factory]) expect(getAddress(a)).toBe(a);
   });
   it("has no duplicate symbols or addresses, and every entry has a source and a check date", () => {
     expect(new Set(EVM_TOKENS.map((t) => t.symbol)).size).toBe(EVM_TOKENS.length);
@@ -36,9 +36,11 @@ describe("EVM registry", () => {
   it("looks tokens up case-insensitively", () => {
     expect(getEvmToken("tslax")?.symbol).toBe("TSLAx");
     expect(getEvmToken("NOPE")).toBeUndefined();
+    expect(getEvmToken("tslax", "robinhood")).toBeUndefined();
+    expect(getEvmToken("spy", "robinhood")?.symbol).toBe("SPY");
   });
-  it("targets only the SwapRouter02 for the geoblock", () => {
-    expect(tradeTargets()).toEqual([chain.uniswapV3.swapRouter02.toLowerCase()]);
+  it("targets only the routers (SwapRouter02, Universal Router) for the geoblock", () => {
+    expect(tradeTargets()).toEqual([chain.uniswapV3.swapRouter02.toLowerCase(), EVM_CHAINS.robinhood.uniswapV4.universalRouter.toLowerCase()]);
   });
 });
 
@@ -60,7 +62,7 @@ describe("EVM calldata and amounts", () => {
   });
   it("wraps exactInputSingle in multicall(deadline) to the router with the taker as recipient", () => {
     const tok = EVM_TOKENS[0]!.address;
-    const c = buildSwap(chain, { tokenIn: chain.usdc.address, tokenOut: tok, fee: 3000, recipient: TAKER, amountIn: 5_000_000n, amountOutMinimum: 777n, deadline: 1_900_000_000n });
+    const c = buildSwap(chain, { tokenIn: chain.usd.address, tokenOut: tok, fee: 3000, recipient: TAKER, amountIn: 5_000_000n, amountOutMinimum: 777n, deadline: 1_900_000_000n });
     expect(c.to).toBe(chain.uniswapV3.swapRouter02);
     const outer = decodeFunctionData({ abi: swapRouter02Abi, data: c.data });
     expect(outer.functionName).toBe("multicall");
@@ -70,7 +72,7 @@ describe("EVM calldata and amounts", () => {
     const inner = decodeFunctionData({ abi: swapRouter02Abi, data: calls[0]! });
     expect(inner.functionName).toBe("exactInputSingle");
     const p = (inner.args as unknown as [Record<string, unknown>])[0];
-    expect(p).toMatchObject({ tokenIn: chain.usdc.address, tokenOut: tok, fee: 3000, recipient: TAKER, amountIn: 5_000_000n, amountOutMinimum: 777n, sqrtPriceLimitX96: 0n });
+    expect(p).toMatchObject({ tokenIn: chain.usd.address, tokenOut: tok, fee: 3000, recipient: TAKER, amountIn: 5_000_000n, amountOutMinimum: 777n, sqrtPriceLimitX96: 0n });
   });
   it("formats wei", () => {
     expect(formatWei(0n)).toBe("0");
@@ -86,7 +88,7 @@ describe("EVM receipts", () => {
   const pad = (a: string) => `0x${a.slice(2).toLowerCase().padStart(64, "0")}`;
   const log = (address: string, to: string, value: bigint) => ({ address, topics: [sel, pad("0x2222222222222222222222222222222222222222"), pad(to)], data: encodeAbiParameters([{ type: "uint256" }], [value]) });
   it("sums Transfer logs of the token to the taker only", () => {
-    const receipt = { status: "0x1", logs: [log(tok, TAKER, 10n), log(tok, TAKER, 5n), log(tok, "0x3333333333333333333333333333333333333333", 99n), log(chain.usdc.address, TAKER, 1000n)] };
+    const receipt = { status: "0x1", logs: [log(tok, TAKER, 10n), log(tok, TAKER, 5n), log(tok, "0x3333333333333333333333333333333333333333", 99n), log(chain.usd.address, TAKER, 1000n)] };
     expect(receivedFromReceipt(receipt, tok, TAKER)).toBe(15n);
     expect(receivedFromReceipt({ status: "0x1", logs: [] }, tok, TAKER)).toBeUndefined();
   });
@@ -138,19 +140,19 @@ describe("quoteExactIn", () => {
       if (fee === 3000) return { result: quoterResult(950n) };
       return { result: quoterResult(0n) };
     });
-    const q = await quoteExactIn(chain, chain.usdc.address, tok, 1_000n, undefined, { fetchImpl });
+    const q = await quoteExactIn(chain, chain.usd.address, tok, 1_000n, undefined, { fetchImpl });
     expect(q?.fee).toBe(3000);
     expect(q?.amountOut).toBe(950n);
   });
   it("returns null when no pool can fill", async () => {
-    const q = await quoteExactIn(chain, chain.usdc.address, tok, 1_000n, undefined, { fetchImpl: fakeFetch(() => ({ error: "execution reverted" })) });
+    const q = await quoteExactIn(chain, chain.usd.address, tok, 1_000n, undefined, { fetchImpl: fakeFetch(() => ({ error: "execution reverted" })) });
     expect(q).toBeNull();
   });
   it("does not hide network failures as 'no pool'", async () => {
     const fetchImpl = (async () => {
       throw new Error("down");
     }) as typeof fetch;
-    await expect(quoteExactIn(chain, chain.usdc.address, tok, 1_000n, undefined, { fetchImpl })).rejects.toMatchObject({ kind: "network" });
+    await expect(quoteExactIn(chain, chain.usd.address, tok, 1_000n, undefined, { fetchImpl })).rejects.toMatchObject({ kind: "network" });
   });
 });
 
@@ -165,7 +167,7 @@ describe("token reads", () => {
     expect(await readDecimals(chain, tok, { fetchImpl })).toBe(9);
     expect(await readDecimals(chain, tok, { fetchImpl })).toBe(9);
     expect(calls).toBe(1);
-    expect(await readDecimals(chain, chain.usdc.address, { fetchImpl })).toBe(6);
+    expect(await readDecimals(chain, chain.usd.address, { fetchImpl })).toBe(6);
     expect(calls).toBe(1);
   });
   it("reads balance and allowance", async () => {

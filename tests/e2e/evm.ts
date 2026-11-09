@@ -39,7 +39,7 @@ const json = (route: Route, body: unknown, status = 200) => route.fulfill({ stat
 const TOKEN_DECIMALS = 18;
 const ROUTER = EVM_CHAINS.ethereum.uniswapV3.swapRouter02.toLowerCase();
 const QUOTER = EVM_CHAINS.ethereum.uniswapV3.quoterV2.toLowerCase();
-const USDC = EVM_CHAINS.ethereum.usdc.address.toLowerCase();
+const USDC = EVM_CHAINS.ethereum.usd.address.toLowerCase();
 const TRANSFER = toEventSelector("Transfer(address,address,uint256)");
 const pad = (a: string) => `0x${a.slice(2).toLowerCase().padStart(64, "0")}`;
 
@@ -53,6 +53,12 @@ export async function mockEvmNetwork(page: Page, o: EvmMockOptions = {}) {
   await page.route("**/api/rpc", async (route) => {
     if (route.request().method() === "GET") return json(route, { country: o.country ?? "US", blocked: o.blocked ?? false });
     return json(route, { jsonrpc: "2.0", id: 1, error: { code: -32601, message: "Method not found" } });
+  });
+
+  // Halaman Portfolio juga membaca Robinhood Chain: jawab saldo nol supaya tidak ada permintaan nyata.
+  await page.route("**/api/rpc?chain=robinhood", async (route) => {
+    const body = route.request().postDataJSON() as { id: unknown };
+    return json(route, { jsonrpc: "2.0", id: body.id, result: "0x" + "00".repeat(32) });
   });
 
   await page.route("**/api/rpc?chain=ethereum", async (route) => {
@@ -120,15 +126,18 @@ export async function mockEvmNetwork(page: Page, o: EvmMockOptions = {}) {
 }
 
 /** Wallet EIP-6963 tiruan. eth_sendTransaction dialihkan ke Node (tidak ada yang dikirim ke jaringan). */
-export async function installFakeEvmWallet(page: Page, mock: { onSend: (tx: { to: string; data: string }) => string }, opts: { reject?: boolean; chainId?: string } = {}) {
+export async function installFakeEvmWallet(page: Page, mock: { onSend: (tx: { to: string; data: string }) => string }, opts: { reject?: boolean; chainId?: string; unknownChains?: string[] } = {}) {
   const sentTxs: Array<{ to: string; data: string }> = [];
   await page.exposeFunction("__evmSend", (tx: { to: string; data: string }) => {
     sentTxs.push(tx);
     return mock.onSend(tx);
   });
   await page.addInitScript(
-    ({ address, reject, chainId }) => {
+    ({ address, reject, chainId, unknownChains }) => {
       let current = chainId;
+      const known = new Set<string>([chainId]);
+      const w = window as unknown as { __addedChains: unknown[] };
+      w.__addedChains = [];
       const provider = {
         request: async ({ method, params }: { method: string; params?: unknown[] }) => {
           switch (method) {
@@ -137,9 +146,19 @@ export async function installFakeEvmWallet(page: Page, mock: { onSend: (tx: { to
               return [address];
             case "eth_chainId":
               return current;
-            case "wallet_switchEthereumChain":
-              current = (params?.[0] as { chainId: string }).chainId;
+            case "wallet_switchEthereumChain": {
+              const id = (params?.[0] as { chainId: string }).chainId;
+              if (unknownChains.includes(id) && !known.has(id)) throw Object.assign(new Error("Unrecognized chain ID"), { code: 4902 });
+              current = id;
               return null;
+            }
+            case "wallet_addEthereumChain": {
+              const p = params?.[0] as { chainId: string };
+              w.__addedChains.push(p);
+              known.add(p.chainId);
+              current = p.chainId;
+              return null;
+            }
             case "eth_sendTransaction": {
               if (reject) throw Object.assign(new Error("User rejected the request"), { code: 4001 });
               return (window as unknown as { __evmSend: (tx: unknown) => Promise<string> }).__evmSend((params as unknown[])[0]);
@@ -156,7 +175,7 @@ export async function installFakeEvmWallet(page: Page, mock: { onSend: (tx: { to
       window.addEventListener("eip6963:requestProvider", announce);
       announce();
     },
-    { address: EVM_TEST_ADDRESS, reject: opts.reject ?? false, chainId: opts.chainId ?? "0x1" },
+    { address: EVM_TEST_ADDRESS, reject: opts.reject ?? false, chainId: opts.chainId ?? "0x1", unknownChains: opts.unknownChains ?? [] },
   );
   return sentTxs;
 }

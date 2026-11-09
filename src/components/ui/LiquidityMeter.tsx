@@ -37,6 +37,8 @@ interface LoadingProps {
 interface UnavailableProps {
   state: "unavailable";
   retry?: ReactNode;
+  /** Sumber kuotasi yang gagal, mis. "Uniswap v4". Bawaan: Jupiter (Solana). */
+  quoteSource?: string;
 }
 
 type Props = ReadyProps | LoadingProps | UnavailableProps;
@@ -128,7 +130,7 @@ export function LiquidityMeter(props: Props) {
       <section className={styles.meter} aria-label="Liquidity, unavailable">
         <p className={styles.headline}>Liquidity is unavailable right now.</p>
         <p className="muted type-small">
-          Jupiter did not return quotes. Your funds are not affected and you can still read this page. Try again in a moment.
+          {props.quoteSource ?? "Jupiter"} did not return quotes. Your funds are not affected and you can still read this page. Try again in a moment.
         </p>
         {props.retry}
       </section>

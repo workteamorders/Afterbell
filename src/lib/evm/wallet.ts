@@ -2,6 +2,8 @@
  * Wallet EVM lewat EIP-6963 (penemuan wallet) dan EIP-1193 (permintaan). Afterbell tidak pernah memegang kunci:
  * wallet menandatangani dan mengirim sendiri lewat eth_sendTransaction. Semua yang dikembalikan provider diperlakukan sebagai data.
  */
+import { devWalletIfEnabled } from "./dev-wallet";
+
 export interface Eip1193Provider {
   request(args: { method: string; params?: unknown[] }): Promise<unknown>;
   on?(event: string, handler: (...args: unknown[]) => void): void;
@@ -39,6 +41,12 @@ export function watchEvmWallets(cb: (wallets: EvmWallet[]) => void): () => void 
   };
   window.addEventListener("eip6963:announceProvider", onAnnounce);
   window.dispatchEvent(new Event("eip6963:requestProvider"));
+  // Wallet uji untuk fork lokal; null di build produksi (lihat dev-wallet.ts).
+  const dev = devWalletIfEnabled();
+  if (dev) {
+    found.set(dev.info.uuid, dev);
+    cb([...found.values()]);
+  }
   return () => window.removeEventListener("eip6963:announceProvider", onAnnounce);
 }
 
@@ -59,8 +67,35 @@ export async function walletChainId(provider: Eip1193Provider): Promise<number |
   return Number(BigInt(v));
 }
 
-export async function switchChain(provider: Eip1193Provider, chainId: number): Promise<void> {
-  await provider.request({ method: "wallet_switchEthereumChain", params: [{ chainId: `0x${chainId.toString(16)}` }] });
+export interface AddChainParams {
+  chainName: string;
+  rpcUrls: readonly string[];
+  blockExplorerUrls: readonly string[];
+  nativeSymbol: string;
+}
+
+/** Kode 4902 (atau pesan "unrecognized chain") berarti wallet belum mengenal chain itu. */
+function isUnknownChain(e: unknown): boolean {
+  const code = (e as { code?: unknown } | null)?.code;
+  const msg = e instanceof Error ? e.message : "";
+  return code === 4902 || /unrecognized chain|not been added|unknown chain/i.test(msg);
+}
+
+/**
+ * Meminta wallet pindah chain. Bila wallet belum mengenalnya dan `add` diberikan, wallet diminta menambahkannya
+ * (wallet menampilkan jendela persetujuan sendiri dan memeriksa parameter yang diberikan).
+ */
+export async function switchChain(provider: Eip1193Provider, chainId: number, add?: AddChainParams): Promise<void> {
+  const hex = `0x${chainId.toString(16)}`;
+  try {
+    await provider.request({ method: "wallet_switchEthereumChain", params: [{ chainId: hex }] });
+  } catch (e) {
+    if (!add || !isUnknownChain(e)) throw e;
+    await provider.request({
+      method: "wallet_addEthereumChain",
+      params: [{ chainId: hex, chainName: add.chainName, nativeCurrency: { name: "Ether", symbol: add.nativeSymbol, decimals: 18 }, rpcUrls: [...add.rpcUrls], blockExplorerUrls: [...add.blockExplorerUrls] }],
+    });
+  }
 }
 
 export interface TxRequest {

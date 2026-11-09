@@ -8,6 +8,7 @@ import { join } from "node:path";
 const OUT = process.argv[2] ?? "out";
 
 const PATTERNS: Array<[string, RegExp]> = [
+  ["Dev wallet code (build without NEXT_PUBLIC_DEV_WALLET before deploying)", /dev-wallet\.afterbell\.local/],
   ["RPC upstream env name", /RPC_UPSTREAM_URL/],
   ["Jupiter API key header", /x-api-key/i],
   ["URL with api-key query", /[?&](api[-_]?key|apikey|key|token)=[A-Za-z0-9_-]{8,}/i],

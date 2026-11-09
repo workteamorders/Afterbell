@@ -217,9 +217,9 @@ test.describe("Ethereum swap flow (mocked network, test wallet)", () => {
   test("portfolio shows the Ethereum holding when an Ethereum wallet is connected", async ({ page }) => {
     await setup(page);
     await page.goto("/portfolio");
-    await page.getByRole("button", { name: "Connect Ethereum wallet" }).click();
+    await page.getByRole("button", { name: "Connect EVM wallet" }).click();
     await page.getByRole("button", { name: /Test EVM Wallet/ }).click();
-    await expect(page.getByRole("table", { name: /Ethereum wallet/ })).toBeVisible();
+    await expect(page.getByRole("table", { name: /wallet on Ethereum/ })).toBeVisible();
     await expect(page.getByRole("link", { name: /TSLAx/ }).first()).toHaveAttribute("href", "/e/TSLAx");
   });
 });
