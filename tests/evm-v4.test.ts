@@ -112,6 +112,7 @@ describe("Uniswap v4 swap calldata", () => {
             { name: "zeroForOne", type: "bool" },
             { name: "amountIn", type: "uint128" },
             { name: "amountOutMinimum", type: "uint128" },
+            { name: "minHopPriceX36", type: "uint256" },
             { name: "hookData", type: "bytes" },
           ],
         },
@@ -132,10 +133,23 @@ describe("Uniswap v4 swap calldata", () => {
     expect(r.swap.zeroForOne).toBe(isZeroForOne(pool, rh.usd.address));
     expect(r.swap.amountIn).toBe(5_000_000n);
     expect(r.swap.amountOutMinimum).toBe(777n);
+    expect(r.swap.minHopPriceX36).toBe(0n);
     expect(r.swap.hookData).toBe("0x");
     expect(r.swap.poolKey.fee).toBe(3000);
     expect(r.settle).toEqual([rh.usd.address, 5_000_000n]);
     expect(r.take).toEqual([STOCK, 777n]);
+  });
+  it("lays out the swap params with minHopPriceX36 before hookData (verified by eth_call on Robinhood Chain mainnet, D-069)", () => {
+    const call = buildSwap(rh, { tokenIn: rh.usd.address, tokenOut: STOCK, fee: 3000, pool, recipient: TAKER, amountIn: 1_000_000n, amountOutMinimum: 5n, deadline: 1_900_000_000n });
+    const d = decodeFunctionData({ abi: universalRouterAbi, data: call.data });
+    const inputs = (d.args as [`0x${string}`, `0x${string}`[], bigint])[1];
+    const [, params] = decodeAbiParameters([{ type: "bytes" }, { type: "bytes[]" }], inputs[0]!) as [`0x${string}`, `0x${string}`[]];
+    const swapBytes = (params[0]!.length - 2) / 2;
+    expect(swapBytes).toBe(12 * 32);
+    const words = params[0]!.slice(2).match(/.{64}/g)!;
+    expect(BigInt("0x" + words[9]!)).toBe(0n);
+    expect(BigInt("0x" + words[10]!)).toBe(0x140n);
+    expect(BigInt("0x" + words[11]!)).toBe(0n);
   });
   it("flips the direction for a sell and sends no ETH", () => {
     const call = buildSwap(rh, { tokenIn: STOCK, tokenOut: rh.usd.address, fee: 3000, pool, recipient: TAKER, amountIn: 10n ** 18n, amountOutMinimum: 1n, deadline: 1n });

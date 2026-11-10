@@ -102,6 +102,11 @@ const POOL_KEY_TUPLE = {
 } as const;
 
 /**
+ * Struktur ExactInputSingleParams di Universal Router Robinhood Chain (4663) punya satu kolom di antara amountOutMinimum dan
+ * hookData: minHopPriceX36 (harga minimum per lompatan, keluaran per masukan dikali 1e36; 0 = tidak dicek). Tanpa kolom ini
+ * router membaca hookData dari posisi salah dan swap gagal tanpa pesan (diperiksa dengan eth_call di mainnet, D-069).
+ * Batas jumlah minimum tetap dipaksa oleh amountOutMinimum dan TAKE_ALL.
+ *
  * UniversalRouter.execute(V4_SWAP, [abi.encode(actions, params)], deadline). Token dibayar dari wallet lewat Permit2,
  * hasil dikirim ke pemanggil (TAKE_ALL ke msg.sender = wallet pengguna). Tidak ada ETH yang dikirim.
  */
@@ -119,11 +124,12 @@ function buildSwapV4(chain: EvmChainV4, p: SwapParams): Call {
           { name: "zeroForOne", type: "bool" },
           { name: "amountIn", type: "uint128" },
           { name: "amountOutMinimum", type: "uint128" },
+          { name: "minHopPriceX36", type: "uint256" },
           { name: "hookData", type: "bytes" },
         ],
       },
     ],
-    [{ poolKey: pool, zeroForOne: isZeroForOne(pool, p.tokenIn), amountIn: p.amountIn, amountOutMinimum: p.amountOutMinimum, hookData: "0x" }],
+    [{ poolKey: pool, zeroForOne: isZeroForOne(pool, p.tokenIn), amountIn: p.amountIn, amountOutMinimum: p.amountOutMinimum, minHopPriceX36: 0n, hookData: "0x" }],
   );
   const settle = encodeAbiParameters([{ type: "address" }, { type: "uint256" }], [p.tokenIn as `0x${string}`, p.amountIn]);
   const take = encodeAbiParameters([{ type: "address" }, { type: "uint256" }], [p.tokenOut as `0x${string}`, p.amountOutMinimum]);
