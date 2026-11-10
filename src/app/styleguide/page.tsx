@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { StyleguideView } from "@/components/styleguide/StyleguideView";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Styleguide",
@@ -7,6 +7,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function StyleguidePage() {
+/** Halaman ini berisi data contoh. Hanya dibangun bila NEXT_PUBLIC_STYLEGUIDE=1 (pengembangan dan tangkapan layar); di produksi menjadi 404. */
+export default async function StyleguidePage() {
+  if (process.env.NEXT_PUBLIC_STYLEGUIDE !== "1") notFound();
+  // Impor dinamis supaya kode dan data contoh tidak ikut terkirim di build produksi.
+  const { StyleguideView } = await import("@/components/styleguide/StyleguideView");
   return <StyleguideView />;
 }

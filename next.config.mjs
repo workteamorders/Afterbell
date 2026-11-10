@@ -9,6 +9,7 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_DEV_WALLET: process.env.NEXT_PUBLIC_DEV_WALLET ?? "",
     NEXT_PUBLIC_DEV_RPC: process.env.NEXT_PUBLIC_DEV_RPC ?? "",
+    NEXT_PUBLIC_STYLEGUIDE: process.env.NEXT_PUBLIC_STYLEGUIDE ?? "",
   },
 };
 
