@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
+import { CopyText } from "@/components/token/CopyText";
+import { BELL_TOKEN, bellTokenExplorerUrl } from "@/lib/bell-token";
 import styles from "./Footer.module.css";
 
 const CONTACT = process.env.NEXT_PUBLIC_CONTACT_EMAIL;
+const BELL_EXPLORER = bellTokenExplorerUrl();
 
 const COLUMNS: ReadonlyArray<{ title: string; links: ReadonlyArray<{ href: string; label: string }> }> = [
   {
@@ -24,7 +27,7 @@ const COLUMNS: ReadonlyArray<{ title: string; links: ReadonlyArray<{ href: strin
   },
 ];
 
-/** Footer: navigasi sekunder, hukum, risiko, privasi, kontak, dan atribusi Jupiter (lisensi §8.4). */
+/** Footer: navigasi sekunder, hukum, risiko, privasi, kontak, atribusi Jupiter (lisensi §8.4), dan alamat kontrak BELL (D-070). */
 export function Footer() {
   return (
     <footer className={styles.footer}>
@@ -62,6 +65,24 @@ export function Footer() {
             <p className="type-small muted">Contact details are added before public launch.</p>
           )}
         </div>
+      </div>
+      <div className={`container ${styles.token}`}>
+        <h2 className="type-label">BELL token</h2>
+        <p className={`type-small ${styles.tokenLine}`}>
+          {BELL_TOKEN.name} ({BELL_TOKEN.symbol}) on Robinhood Chain. Contract address:{" "}
+          <CopyText value={BELL_TOKEN.address} label={`${BELL_TOKEN.symbol} contract address`} />
+          {BELL_EXPLORER ? (
+            <>
+              {" "}
+              <a href={BELL_EXPLORER} rel="noopener noreferrer" target="_blank">
+                View on the explorer
+              </a>
+            </>
+          ) : null}
+        </p>
+        <p className="type-small muted">
+          Using Afterbell does not require holding BELL. Compare the contract address with the explorer yourself before you interact with any token. Nothing here is investment advice.
+        </p>
       </div>
     </footer>
   );
